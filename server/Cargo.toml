@@ -1,0 +1,29 @@
+[package]
+name = "vertd-server"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+actix-cors = "0.7.0"
+actix-multipart = "0.7.2"
+actix-web = "4.9.0"
+actix-ws = "0.3.0"
+futures-util = "0.3.31"
+hex = "0.4.3"
+rand = "0.9.0"
+discord-webhook2 = "0.4.3"
+mime_guess = "2.0.5"
+dotenv = "0.15.0"
+env_logger = "0.11.6"
+lazy_static = "1.5.0"
+
+anyhow = { workspace = true }
+log = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+uuid = { workspace = true }
+thiserror = { workspace = true }
+rbtag = { workspace = true }
+
+vertd = { path = "../vertd" }

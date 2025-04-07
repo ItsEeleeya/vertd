@@ -1,7 +1,6 @@
-[package]
-name = "vertd"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+resolver = "2"
+members = ["vertd", "server", "desktop/src-tauri"]
 
 [dependencies]
 actix-cors = "0.7.0"
