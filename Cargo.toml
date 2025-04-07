@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
 members = ["vertd", "server", "desktop/src-tauri"]
+package.license = "AGPL-3.0"
 
 [workspace.dependencies]
 log = "0.4.25"

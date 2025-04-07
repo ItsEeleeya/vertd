@@ -48,6 +48,16 @@
 	"bundle": {
 		"active": true,
 		"targets": "all",
+		"macOS": {
+			"hardenedRuntime": true,
+			"minimumSystemVersion": "13.3"
+		},
+		"shortDescription": "The file converter you'll love.",
+		"publisher": "vert.sh",
+		"homepage": "verth.sh",
+		"copyright": "AGPL-3.0",
+		"license": "© 2025 VERT.",
+		"category": "Utility",
 		"icon": [
 			"icons/32x32.png",
 			"icons/128x128.png",
