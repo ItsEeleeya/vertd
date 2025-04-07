@@ -35,9 +35,9 @@ pub enum Message {
     Error { message: String },
 }
 
-impl Into<String> for Message {
-    fn into(self) -> String {
-        serde_json::to_string(&self).unwrap()
+impl From<Message> for String {
+    fn from(val: Message) -> Self {
+        serde_json::to_string(&val).unwrap()
     }
 }
 
@@ -157,7 +157,7 @@ pub async fn websocket(req: HttpRequest, stream: web::Payload) -> Result<HttpRes
                 drop(app_state);
 
                 // check if output/{}.{} exists and isn't empty
-                let is_empty = fs::metadata(&format!("output/{}.{}", job_id, to.to_string()))
+                let is_empty = fs::metadata(&format!("output/{}.{}", job_id, to))
                     .await
                     .map(|m| m.len() == 0)
                     .unwrap_or(true);
@@ -190,7 +190,7 @@ pub async fn websocket(req: HttpRequest, stream: web::Payload) -> Result<HttpRes
                     app_state.jobs.remove(&job_id);
                     drop(app_state);
 
-                    let path = format!("output/{}.{}", job_id, to.to_string());
+                    let path = format!("output/{}.{}", job_id, to);
                     if let Err(e) = fs::remove_file(&path).await {
                         if e.kind() != std::io::ErrorKind::NotFound {
                             log::error!("failed to remove output file: {}", e);
