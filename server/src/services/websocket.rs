@@ -11,8 +11,7 @@ use uuid::Uuid;
 
 use crate::{
     converter::{format::ConverterFormat, job::ProgressUpdate, speed::ConversionSpeed, Converter},
-    state::APP_STATE,
-    OUTPUT_LIFETIME,
+    APP_STATE, OUTPUT_LIFETIME,
 };
 
 #[derive(Serialize, Deserialize)]

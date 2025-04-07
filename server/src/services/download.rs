@@ -1,10 +1,11 @@
 // get /download/{id} where id is Uuid
 
+use crate::APP_STATE;
 use actix_web::{get, web, HttpResponse, Responder, ResponseError};
 use tokio::fs;
 use uuid::Uuid;
 
-use crate::{http::response::ApiResponse, state::APP_STATE};
+use crate::response::ApiResponse;
 
 #[derive(Debug, thiserror::Error)]
 pub enum DownloadError {

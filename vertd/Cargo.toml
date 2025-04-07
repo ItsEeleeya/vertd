@@ -1,0 +1,26 @@
+[package]
+name = "vertd"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "vertd"
+path = "src/main.rs"
+
+[lib]
+name = "vertd"
+path = "src/lib.rs"
+
+[dependencies]
+strum = "0.27.1"
+strum_macros = "0.27.1"
+wgpu = "24.0.1"
+
+log = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+rbtag = { workspace = true }

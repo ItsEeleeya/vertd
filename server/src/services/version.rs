@@ -1,7 +1,7 @@
 use actix_web::{get, Responder};
 use rbtag::BuildInfo;
 
-use crate::http::response::ApiResponse;
+use crate::response::ApiResponse;
 
 #[derive(BuildInfo)]
 struct BuildTag;

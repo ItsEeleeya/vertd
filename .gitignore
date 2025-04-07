@@ -8,3 +8,5 @@ ffprobe
 input.mp4
 .env
 result
+
+.DS_Store
