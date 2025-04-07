@@ -1,0 +1,165 @@
+/* Background Color Utilities */
+@utility bg-panel {
+	background-color: var(--bg-panel);
+}
+@utility bg-panel-highlight {
+	background-color: var(--bg-panel-highlight);
+}
+@utility bg-separator {
+	background-color: var(--bg-separator);
+}
+@utility bg-button {
+	background-color: var(--bg-button);
+}
+@utility bg-panel-alt {
+	background-color: var(--bg-button);
+}
+@utility bg-badge {
+	background-color: var(--bg-badge);
+}
+
+/* Border Color Utilities */
+@utility border-separator {
+	border-color: var(--bg-separator);
+}
+@utility border-button {
+	border-color: var(--bg-button);
+}
+
+/* Text Color Utilities */
+@utility text-foreground {
+	color: var(--fg);
+}
+@utility text-muted {
+	color: var(--fg-muted);
+}
+@utility text-accent {
+	color: var(--fg-accent);
+}
+@utility text-failure {
+	color: var(--fg-failure);
+}
+@utility text-on-accent {
+	color: var(--fg-on-accent);
+}
+@utility text-on-badge {
+	color: var(--fg-on-badge);
+}
+
+/* Accent Palette Utilities (Backgrounds) */
+@utility bg-accent {
+	background-color: var(--accent);
+}
+@utility bg-accent-alt {
+	background-color: var(--accent-alt);
+}
+@utility bg-accent-pink {
+	background-color: var(--accent-pink);
+}
+@utility bg-accent-pink-alt {
+	background-color: var(--accent-pink-alt);
+}
+@utility bg-accent-red {
+	background-color: var(--accent-red);
+}
+@utility bg-accent-red-alt {
+	background-color: var(--accent-red-alt);
+}
+@utility bg-accent-purple {
+	background-color: var(--accent-purple);
+}
+@utility bg-accent-purple-alt {
+	background-color: var(--accent-purple-alt);
+}
+@utility bg-accent-blue {
+	background-color: var(--accent-blue);
+}
+@utility bg-accent-blue-alt {
+	background-color: var(--accent-blue-alt);
+}
+
+/* Accent Palette Utilities (Text) */
+@utility text-accent-pink {
+	color: var(--accent-pink);
+}
+@utility text-accent-pink-alt {
+	color: var(--accent-pink-alt);
+}
+@utility text-accent-red {
+	color: var(--accent-red);
+}
+@utility text-accent-red-alt {
+	color: var(--accent-red-alt);
+}
+@utility text-accent-purple {
+	color: var(--accent-purple);
+}
+@utility text-accent-purple-alt {
+	color: var(--accent-purple-alt);
+}
+@utility text-accent-blue {
+	color: var(--accent-blue);
+}
+@utility text-accent-blue-alt {
+	color: var(--accent-blue-alt);
+}
+
+/* Box Shadow Utility */
+@utility shadow-panel {
+	box-shadow: var(--shadow-panel);
+}
+
+/* Font Family Utilities */
+@utility font-display {
+	font-family: var(--font-display);
+}
+@utility font-body {
+	font-family: var(--font-body);
+}
+
+/* Blur Utility */
+@utility blur-xs {
+	filter: blur(2px);
+}
+
+/* Border Radius Utility */
+@utility rounded-2_5xl {
+	border-radius: 1.25rem;
+}
+
+@utility outline {
+	outline: 2px solid var(--color-base-content);
+	outline-offset: 2px;
+}
+@utility outline-primary {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+}
+@utility outline-secondary {
+	outline: 2px solid var(--color-secondary);
+	outline-offset: 2px;
+}
+@utility outline-accent {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 2px;
+}
+@utility outline-neutral {
+	outline: 2px solid var(--color-neutral);
+	outline-offset: 2px;
+}
+@utility outline-info {
+	outline: 2px solid var(--color-info);
+	outline-offset: 2px;
+}
+@utility outline-success {
+	outline: 2px solid var(--color-success);
+	outline-offset: 2px;
+}
+@utility outline-warning {
+	outline: 2px solid var(--color-warning);
+	outline-offset: 2px;
+}
+@utility outline-error {
+	outline: 2px solid var(--color-error);
+	outline-offset: 2px;
+}
