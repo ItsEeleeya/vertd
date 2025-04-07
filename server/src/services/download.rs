@@ -70,7 +70,7 @@ pub async fn download(path: web::Path<(Uuid, String)>) -> Result<impl Responder,
 
     fs::remove_file(file_path)
         .await
-        .map_err(|e| DownloadError::FilesystemError(e))?;
+        .map_err(DownloadError::FilesystemError)?;
 
     Ok(HttpResponse::Ok()
         .insert_header(("Content-Type", mime))
