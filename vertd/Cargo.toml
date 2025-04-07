@@ -1,15 +1,10 @@
 [package]
 name = "vertd"
 version = "0.1.0"
-edition = "2021"
-
-[[bin]]
-name = "vertd"
-path = "src/main.rs"
+edition = "2024"
 
 [lib]
 name = "vertd"
-path = "src/lib.rs"
 
 [dependencies]
 strum = "0.27.1"
