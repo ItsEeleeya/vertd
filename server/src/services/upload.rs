@@ -1,13 +1,11 @@
-use crate::{
-    converter::{format::ConverterFormat, job::Job},
-    http::response::ApiResponse,
-    state::APP_STATE,
-};
 use actix_multipart::Multipart;
 use actix_web::{post, HttpResponse, Responder, ResponseError};
 use futures_util::StreamExt as _;
 use log::info;
 use tokio::fs;
+use vertd::converter::{format::ConverterFormat, job::Job};
+
+use crate::{response::ApiResponse, APP_STATE};
 
 #[derive(Debug, thiserror::Error)]
 pub enum UploadError {
@@ -66,12 +64,10 @@ pub async fn upload(mut payload: Multipart) -> Result<impl Responder, UploadErro
         let ext = filename
             .split('.')
             .last()
-            .and_then(|ext| {
-                Some(
-                    ext.chars()
-                        .filter(|c| c.is_alphanumeric())
-                        .collect::<String>(),
-                )
+            .map(|ext| {
+                ext.chars()
+                    .filter(|c| c.is_alphanumeric())
+                    .collect::<String>()
             })
             .ok_or_else(|| UploadError::NoExtension)?;
 
