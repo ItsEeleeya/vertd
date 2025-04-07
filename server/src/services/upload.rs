@@ -1,11 +1,14 @@
 use actix_multipart::Multipart;
-use actix_web::{post, HttpResponse, Responder, ResponseError};
+use actix_web::{HttpResponse, Responder, ResponseError, post};
 use futures_util::StreamExt as _;
 use log::info;
-use tokio::fs;
+use tokio::{
+    fs::{self, File},
+    io::AsyncWriteExt,
+};
 use vertd::converter::{format::ConverterFormat, job::Job};
 
-use crate::{response::ApiResponse, APP_STATE};
+use crate::{APP_STATE, response::ApiResponse};
 
 #[derive(Debug, thiserror::Error)]
 pub enum UploadError {
@@ -88,7 +91,11 @@ pub async fn upload(mut payload: Multipart) -> Result<impl Responder, UploadErro
         let our_job = Job::new(token, ext.to_string());
         job = Some(our_job.clone());
         let mut app_state = APP_STATE.lock().await;
-        fs::write(format!("input/{}.{}", our_job.id, ext), &bytes).await?;
+        // fs::write(format!("input/{}.{}", our_job.id, ext), &bytes).await?;
+        let mut file = File::create(format!("input/{}.{}", our_job.id, ext)).await?;
+        file.write_all(&bytes).await?;
+        file.flush().await?;
+        drop(file);
         app_state.jobs.insert(our_job.id, our_job.clone());
         // spawn a new task which waits an hour before removing the job
         tokio::spawn(async move {
