@@ -64,12 +64,10 @@ pub async fn upload(mut payload: Multipart) -> Result<impl Responder, UploadErro
         let ext = filename
             .split('.')
             .last()
-            .and_then(|ext| {
-                Some(
-                    ext.chars()
-                        .filter(|c| c.is_alphanumeric())
-                        .collect::<String>(),
-                )
+            .map(|ext| {
+                ext.chars()
+                    .filter(|c| c.is_alphanumeric())
+                    .collect::<String>()
             })
             .ok_or_else(|| UploadError::NoExtension)?;
 
