@@ -1,5 +1,10 @@
+use error::AppError;
 use tauri::{Manager, WebviewWindow};
 use tauri_plugin_window_state::StateFlags;
+
+mod error;
+
+pub type AppResult<T> = std::result::Result<T, AppError>;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
