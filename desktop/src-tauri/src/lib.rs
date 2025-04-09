@@ -6,14 +6,22 @@ mod error;
 
 pub type AppResult<T> = std::result::Result<T, AppError>;
 
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    let specta_builder = tauri_specta::Builder::<tauri::Wry>::new()
+        .events(tauri_specta::collect_events!())
+        .commands(tauri_specta::collect_commands![]);
+
+    #[cfg(debug_assertions)]
+    specta_builder
+        .export(
+            specta_typescript::Typescript::default()
+                .formatter(specta_typescript::formatter::prettier)
+                .header("// @ts-nocheck"),
+            "../src/bindings.ts",
+        )
+        .expect("Failed to export typescript bindings");
+
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_os::init())
@@ -23,8 +31,25 @@ pub fn run() {
                 .with_state_flags(StateFlags::SIZE | StateFlags::POSITION | StateFlags::MAXIMIZED)
                 .build(),
         )
-        .invoke_handler(tauri::generate_handler![greet])
-        .setup(|app| {
+        .plugin(
+            tauri_plugin_prevent_default::Builder::default()
+                .with_flags({
+                    use tauri_plugin_prevent_default::Flags;
+                    #[cfg(debug_assertions)]
+                    {
+                        Flags::all().difference(Flags::DEV_TOOLS | Flags::RELOAD)
+                    }
+                    #[cfg(not(debug_assertions))]
+                    {
+                        Flags::all()
+                    }
+                })
+                .build(),
+        )
+        .invoke_handler(specta_builder.invoke_handler())
+        .setup(move |app| {
+            specta_builder.mount_events(app);
+
             #[cfg(target_os = "macos")]
             app.webview_windows()
                 .iter()

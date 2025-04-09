@@ -1,3 +1,19 @@
+@utility hoverable {
+	@apply hover:scale-105 duration-200;
+}
+
+@utility hoverable-md {
+	@apply hover:scale-110 duration-200;
+}
+
+@utility hoverable-lg {
+	@apply hover:scale-[1.15] duration-200;
+}
+
+@utility selected {
+	@apply bg-accent-purple !text-black;
+}
+
 /* Background Color Utilities */
 @utility bg-panel {
 	background-color: var(--bg-panel);
@@ -16,6 +32,10 @@
 }
 @utility bg-badge {
 	background-color: var(--bg-badge);
+}
+
+@utility bg-vert-graident {
+	background: var(--bg-gradient);
 }
 
 /* Border Color Utilities */

@@ -1,4 +1,6 @@
 <script>
 </script>
 
-<slot />
+<div class="w-screen h-screen">
+	<slot />
+</div>
