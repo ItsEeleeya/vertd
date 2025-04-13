@@ -16,10 +16,11 @@
 			{
 				"label": "main",
 				"title": "Vert",
-				"width": 800,
+				"width": 600,
 				"height": 600,
-				"minWidth": 500,
-				"minHeight": 400,
+				"minWidth": 600,
+				"minHeight": 500,
+				"maxWidth": 600,
 				"transparent": true,
 				"acceptFirstMouse": true,
 				"center": true,
@@ -30,14 +31,14 @@
 					"effects": ["underWindowBackground", "mica"]
 				},
 				"trafficLightPosition": {
-					"x": 16,
+					"x": 14,
 					"y": 20
 				},
 				"backgroundColor": {
-					"red": 0,
-					"green": 0,
-					"blue": 0,
-					"alpha": 100
+					"red": 36,
+					"green": 38,
+					"blue": 40,
+					"alpha": 20
 				}
 			}
 		],

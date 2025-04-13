@@ -37,7 +37,8 @@ pub fn run() {
                     use tauri_plugin_prevent_default::Flags;
                     #[cfg(debug_assertions)]
                     {
-                        Flags::all().difference(Flags::DEV_TOOLS | Flags::RELOAD)
+                        Flags::all()
+                            .difference(Flags::DEV_TOOLS | Flags::RELOAD | Flags::CONTEXT_MENU)
                     }
                     #[cfg(not(debug_assertions))]
                     {

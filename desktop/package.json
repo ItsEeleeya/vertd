@@ -16,14 +16,15 @@
 		"tauri": "tauri"
 	},
 	"dependencies": {
-		"@tauri-apps/api": "^2",
-		"@tauri-apps/plugin-opener": "^2",
 		"@fontsource/azeret-mono": "^5.1.1",
 		"@fontsource/lexend": "^5.1.2",
-		"@fontsource/radio-canada-big": "^5.1.1"
+		"@fontsource/radio-canada-big": "^5.1.1",
+		"@tauri-apps/api": "^2",
+		"@tauri-apps/plugin-opener": "^2",
+		"@tauri-apps/plugin-os": "~2"
 	},
 	"devDependencies": {
-		"@poppanator/sveltekit-svg": "^5.0.0",
+		"@poppanator/sveltekit-svg": "^5.0.1",
 		"@sveltejs/adapter-static": "^3.0.6",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
