@@ -97,6 +97,12 @@
 @utility bg-accent-blue-alt {
 	background-color: var(--accent-blue-alt);
 }
+@utility bg-accent-green {
+	background-color: var(--accent-green);
+}
+@utility bg-accent-green-alt {
+	background-color: var(--accent-green-alt);
+}
 
 /* Accent Palette Utilities (Text) */
 @utility text-accent-pink {

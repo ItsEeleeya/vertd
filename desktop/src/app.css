@@ -41,6 +41,8 @@
 	--accent-purple-alt: hsl(264, 100%, 50%);
 	--accent-blue: hsl(220, 100%, 78%);
 	--accent-blue-alt: hsl(220, 100%, 50%);
+	--accent-green: hsl(140, 70%, 74%);
+	--accent-green-alt: hsl(140, 66%, 55%);
 	--accent: var(--accent-pink);
 	--accent-alt: var(--accent-pink-alt);
 
@@ -125,6 +127,8 @@
 	--accent-purple-alt: hsl(264, 100%, 50%);
 	--accent-blue: hsl(220, 100%, 78%);
 	--accent-blue-alt: hsl(220, 100%, 50%);
+	--accent-green: hsl(140, 70%, 74%);
+	--accent-green-alt: hsl(140, 64%, 42%);
 	--accent: var(--accent-pink);
 	--accent-alt: var(--accent-pink-alt);
 

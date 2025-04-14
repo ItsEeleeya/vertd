@@ -1,6 +1,18 @@
 <script lang="ts">
 	import { type as ostype } from "@tauri-apps/plugin-os";
 	import Logo from "$lib/assets/Logo.svg?component";
+	import { LucideEllipsis } from "lucide-svelte";
+	import { Menu } from "@tauri-apps/api/menu";
+	import { LogicalPosition } from "@tauri-apps/api/dpi";
+
+	async function showMenu(event: MouseEvent) {
+		const menu = await Menu.default();
+		const buttonElement = event.target as HTMLElement;
+		const rect = buttonElement.getBoundingClientRect();
+		console.log(`${JSON.stringify(rect)}`);
+
+		menu.popup(new LogicalPosition(rect.left, rect.bottom + 5));
+	}
 </script>
 
 <header
@@ -37,6 +49,8 @@
 		data-tauri-drag-region
 		class="flex-none min-w-40 flex items-center justify-end p-2 h-8 gap-2"
 	>
-		…
+		<button type="button" onclick={showMenu} class="rounded-xl">
+			<LucideEllipsis size="18" />
+		</button>
 	</div>
 </header>
