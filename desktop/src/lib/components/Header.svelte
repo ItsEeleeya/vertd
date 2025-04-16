@@ -47,9 +47,9 @@
 
 	<div
 		data-tauri-drag-region
-		class="flex-none min-w-40 flex items-center justify-end p-2 h-8 gap-2"
+		class="flex-none min-w-40 flex items-center justify-end p-2 h-6 gap-2"
 	>
-		<button type="button" onclick={showMenu} class="rounded-xl">
+		<button type="button" onclick={showMenu} class="btn btn-ghost rounded-lg!">
 			<LucideEllipsis size="18" />
 		</button>
 	</div>

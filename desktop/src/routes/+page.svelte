@@ -8,9 +8,20 @@
 		Image,
 		LucideChevronDown,
 	} from "lucide-svelte";
+	import { onMount } from "svelte";
 	import { blur, slide } from "svelte/transition";
 
-	let supportedFormatsVisible = $state(true);
+	let showFormats = $state(true);
+
+	onMount(() => {
+		const onKeyDown = (e: KeyboardEvent) => {
+			if (e.code === "KeyS") {
+				showFormats = !showFormats;
+			}
+		};
+		window.addEventListener("keydown", onKeyDown);
+		return () => window.removeEventListener("keydown", onKeyDown);
+	});
 
 	const status: {
 		[key: string]: {
@@ -46,45 +57,35 @@
 	<div data-tauri-drag-region class="grow min-h-1/3 pt-1 pb-3">
 		<DropArea />
 	</div>
-	<div data-tauri-drag-region class="pb-3">
-		<div data-tauri-drag-region class="w-full flex items-center">
-			{#if supportedFormatsVisible}
+	<div data-tauri-drag-region>
+		<div data-tauri-drag-region class="w-full flex items-center pb-3">
+			{#if showFormats}
 				<h2
 					transition:blur={{ duration: 300 }}
-					class="text-center opacity-85 text-xl pointer-events-none p-1"
+					class="text-center opacity-85 text-xl pointer-events-none px-1"
 				>
-					Supported formats
+					VERT supports…
 				</h2>
 			{/if}
 			<button
 				type="button"
-				class="btn text-sm ml-auto opacity-80 transition-all duration-150 min-w-52 gap-2 items-stretch"
-				onclick={() =>
-					(supportedFormatsVisible = !supportedFormatsVisible)}
+				class="btn btn-ghost text-sm ml-auto opacity-80 transition-all duration-150 gap-1 items-stretch"
+				onclick={() => (showFormats = !showFormats)}
+				aria-expanded={showFormats}
+				title={showFormats
+					? "Hide supported formats"
+					: "Show supported formats"}
 			>
-				<LucideChevronDown
-					size="14"
-					class={clsx(
-						"transition-all duration-300",
-						supportedFormatsVisible ? "" : "rotate-180",
-					)}
-				/>
-				{#key supportedFormatsVisible}
-					<span in:blur={{ duration: 300 }}>
-						{#if supportedFormatsVisible}
-							<span in:blur>Hide supported formats</span>
-						{:else}
-							<span in:blur>Show supported formats </span>
-						{/if}
-					</span>
-				{/key}
+				<div class="duration-500" class:rotate-180={!showFormats}>
+					<LucideChevronDown size="14" />
+				</div>
 			</button>
 		</div>
-		{#if supportedFormatsVisible}
+		{#if showFormats}
 			<div
 				data-tauri-drag-region
-				class="pt-3 flex gap-3 flex-wrap justify-center items-stretch max-w-2xl mx-auto transition-all duration-1000 ease-in-out hidden:opacity-0 opacity-100"
-				transition:slide={{ duration: 300 }}
+				class="flex gap-3 flex-wrap justify-center items-stretch max-w-2xl pb-3"
+				transition:slide={{ duration: 200 }}
 			>
 				{#each Object.entries(status) as [key, s]}
 					{@const Icon = s.icon}

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./utilities";
+@import "./tw-animate";
 @import url("$lib/assets/style/host-grotesk.css");
 
 @plugin "tailwind-scrollbar";
@@ -223,6 +224,23 @@ select {
 		opacity 0.2s ease,
 		transform 0.2s ease,
 		background-color 0.2s ease;
+}
+
+.btn-ghost {
+	@apply bg-transparent hover:bg-neutral-50/10 focus:bg-neutral-50/10;
+}
+
+/* .btn-primary {
+	@apply bg-button flex items-center justify-center overflow-hidden relative px-3 h-8 rounded-xl font-medium focus:!outline-none duration-200 disabled:opacity-50 disabled:pointer-events-none;
+	transition:
+		opacity 0.2s ease,
+		transform 0.2s ease,
+		background-color 0.2s ease;
+} */
+
+.btn-primary {
+	--btn-color: var(--color-primary);
+	--btn-fg: var(--color-primary-content);
 }
 
 .btn.highlight {

@@ -16,6 +16,7 @@
 			{
 				"label": "main",
 				"title": "Vert",
+				"visible": false,
 				"width": 600,
 				"height": 500,
 				"minWidth": 600,
