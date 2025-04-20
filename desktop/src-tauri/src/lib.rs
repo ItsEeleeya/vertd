@@ -1,7 +1,8 @@
 use error::AppError;
-use tauri::{Manager, WebviewWindow};
+use tauri::{Manager, WebviewWindow, Wry};
 use tauri_plugin_window_state::StateFlags;
 
+mod commands;
 mod error;
 
 pub type AppResult<T> = std::result::Result<T, AppError>;
@@ -10,7 +11,7 @@ pub type AppResult<T> = std::result::Result<T, AppError>;
 pub fn run() {
     let specta_builder = tauri_specta::Builder::<tauri::Wry>::new()
         .events(tauri_specta::collect_events!())
-        .commands(tauri_specta::collect_commands![]);
+        .commands(tauri_specta::collect_commands![commands::invalidate_shadow]);
 
     #[cfg(debug_assertions)]
     specta_builder
@@ -51,17 +52,18 @@ pub fn run() {
         .setup(move |app| {
             specta_builder.mount_events(app);
 
-            #[cfg(target_os = "macos")]
-            app.webview_windows()
-                .iter()
-                .try_for_each(|(_, window)| unsafe {
-                    let nswindow = window.objc2_nswindow()?;
-                    nswindow.setOpaque(true);
-                    nswindow.setCollectionBehavior(
-                        objc2_app_kit::NSWindowCollectionBehavior::FullScreenNone,
-                    );
-                    Ok::<(), tauri::Error>(())
-                })?;
+            // TODO: Add an option for using default decoration on macOS.
+            // #[cfg(target_os = "macos")]
+            // app.webview_windows()
+            //     .iter()
+            //     .try_for_each(|(_, window)| unsafe {
+            //         let nswindow = window.objc2_nswindow()?;
+            //         nswindow.setOpaque(true);
+            //         nswindow.setCollectionBehavior(
+            //             objc2_app_kit::NSWindowCollectionBehavior::FullScreenNone,
+            //         );
+            //         Ok::<(), tauri::Error>(())
+            //     })?;
 
             Ok(())
         })

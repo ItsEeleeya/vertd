@@ -3,7 +3,19 @@
 
 /** user-defined commands **/
 
-export const commands = {};
+export const commands = {
+	async invalidateShadow(): Promise<Result<null, string>> {
+		try {
+			return {
+				status: "ok",
+				data: await TAURI_INVOKE("invalidate_shadow"),
+			};
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: "error", error: e as any };
+		}
+	},
+};
 
 /** user-defined events **/
 

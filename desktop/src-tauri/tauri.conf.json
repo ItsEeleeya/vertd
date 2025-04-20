@@ -22,24 +22,20 @@
 				"minWidth": 600,
 				"minHeight": 500,
 				"maxWidth": 600,
-				"transparent": true,
 				"acceptFirstMouse": true,
 				"center": true,
 				"hiddenTitle": true,
 				"titleBarStyle": "Overlay",
+				"transparent": true,
+				"shadow": false,
 				"windowEffects": {
 					"state": "active",
+					"radius": 28,
 					"effects": ["underWindowBackground", "mica"]
 				},
 				"trafficLightPosition": {
-					"x": 14,
+					"x": 16,
 					"y": 20
-				},
-				"backgroundColor": {
-					"red": 36,
-					"green": 38,
-					"blue": 40,
-					"alpha": 20
 				}
 			}
 		],

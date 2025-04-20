@@ -38,11 +38,11 @@
 </script>
 
 <div
-	class="size-full rounded-lg border-3 border-dashed border-neutral-50/20 bg-[var(--bg)]/60 flex flex-col items-center justify-center gap-2 cursor-pointer"
+	class="size-full rounded-2xl border-2 border-dashed border-transparent hover:border-neutral-50/10 duration-200 hover:bg-vert-purple/5 flex flex-col items-center justify-center gap-2 cursor-pointer"
 >
 	{#key dragState}
 		<div
-			class="rounded-full bg-accent size-10 flex items-center justify-center text-black text-4xl transition-all duration-1000"
+			class="rounded-full bg-secondary size-10 flex items-center justify-center text-black text-4xl transition-all duration-1000"
 			class:animate-bounce={dragState === "over"}
 			in:scale={{ start: 0.5, duration: 100, delay: 50 }}
 		>
@@ -56,26 +56,3 @@
 		<p in:blur class="animate-bounce">Release to add</p>
 	{:else}{/if}
 </div>
-
-<style>
-	@keyframes smoothBounce {
-		0%,
-		20% {
-			transform: translateY(0);
-		}
-		50% {
-			transform: translateY(-10px);
-		}
-		70% {
-			transform: translateY(0);
-		}
-		100% {
-			transform: translateY(0);
-		}
-	}
-
-	.smooth-bounce {
-		animation: smoothBounce 1s ease-in-out infinite;
-		animation-delay: 0.1s; /* Small delay to prevent the initial jump */
-	}
-</style>

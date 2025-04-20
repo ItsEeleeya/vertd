@@ -4,5 +4,3 @@
 export const prerender = true;
 export const ssr = false;
 
-import "../app.css";
-import "@fontsource/radio-canada-big/600.css";

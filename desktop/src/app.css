@@ -1,18 +1,14 @@
 @import "tailwindcss";
-@import "./utilities";
 @import "./tw-animate";
+@import "./utilities";
 @import url("$lib/assets/style/host-grotesk.css");
 
+@plugin "daisyui";
 @plugin "tailwind-scrollbar";
 
 :root {
-	@apply cursor-default select-none antialiased;
+	@apply cursor-default select-none antialiased font-body font-semibold overflow-hidden scrollbar-thin bg-base-100/8 w-screen h-screen;
 
-	--font-body:
-		"Host Grotesk", system-ui, -apple-system, BlinkMacSystemFont,
-		"Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-		"Helvetica Neue", sans-serif;
-	--font-display: "Radio Canada Big", var(--font-body);
 	--transition: linear(
 		0,
 		0.006,
@@ -29,32 +25,96 @@
 		1.017 63.9%,
 		1.001
 	);
+
+	--radius-selector: 2rem;
+	--radius-field: 2rem;
+	--radius-box: 2rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.28125rem;
+	--border: 1px;
+	--depth: 0;
+	--noise: 0;
 }
 
-:root[data-theme="light"] {
-	/* general */
-	--accent-pink: hsl(302, 100%, 76%);
-	--accent-pink-alt: hsl(302, 100%, 50%);
-	--accent-pink-muted: hsl(302, 98%, 42%);
-	--accent-red: hsl(348, 100%, 80%);
-	--accent-red-alt: hsl(348, 100%, 50%);
-	--accent-purple: hsl(264, 100%, 81%);
-	--accent-purple-alt: hsl(264, 100%, 50%);
-	--accent-blue: hsl(220, 100%, 78%);
-	--accent-blue-alt: hsl(220, 100%, 50%);
-	--accent-green: hsl(140, 70%, 74%);
-	--accent-green-alt: hsl(140, 66%, 55%);
-	--accent: var(--accent-pink);
-	--accent-alt: var(--accent-pink-alt);
+[platform="macos"] {
+	#layout_container,
+	:root {
+		@apply rounded-[180px] border-[1px] border-neutral-50/20;
+	}
+}
 
-	/*  foregrounds */
-	--fg: hsl(0, 0%, 0%);
-	--fg-muted: hsla(0, 0%, 0%, 0.6);
-	--fg-on-accent: hsl(0, 0%, 0%);
-	--fg-on-badge: hsl(0, 0%, 0%);
-	/*  readable version of the accent color
-	--fg-accent: var(--accent-pink-muted);
-	--fg-failure: var(--accent-red-alt);
+@plugin "daisyui/theme" {
+	name: "light";
+	default: true;
+	prefersdark: false;
+	color-scheme: "light";
+	--color-base-100: oklch(98% 0.003 247.858);
+	--color-base-200: hsl(0, 0%, 95%);
+	--color-base-300: oklch(92% 0.004 286.32);
+	--color-base-content: oklch(0% 0 0);
+	--color-primary: hsl(302, 98%, 42%);
+	--color-primary-content: oklch(96% 0.015 12.422);
+	--color-secondary: hsl(302, 100%, 76%);
+	--color-secondary-content: oklch(29% 0.136 325.661);
+	--color-accent: hsl(264, 100%, 50%);
+	--color-accent-content: oklch(95% 0.026 236.824);
+	--color-neutral: oklch(14% 0.005 285.823);
+	--color-neutral-content: oklch(92% 0.004 286.32);
+	--color-info: oklch(74% 0.16 232.661);
+	--color-info-content: oklch(29% 0.066 243.157);
+	--color-success: oklch(76% 0.177 163.223);
+	--color-success-content: oklch(37% 0.077 168.94);
+	--color-warning: oklch(82% 0.189 84.429);
+	--color-warning-content: oklch(41% 0.112 45.904);
+	--color-error: hsl(348, 100%, 50%);
+	--color-error-content: oklch(27% 0.105 12.094);
+}
+
+@plugin "daisyui/theme" {
+	name: "dark";
+	prefersdark: true;
+	color-scheme: "dark";
+	--color-base-100: oklch(14% 0 0);
+	--color-base-200: hsl(120, 5%, 15%);
+	--color-base-300: oklch(26% 0 0);
+	--color-base-content: oklch(97% 0 0);
+	--color-primary: hsl(302, 98%, 42%);
+	--color-primary-content: oklch(98% 0.022 95.277);
+	--color-secondary: hsl(302, 100%, 76%);
+	--color-secondary-content: oklch(29% 0.136 325.661);
+	--color-accent: hsl(264, 100%, 50%);
+	--color-accent-content: oklch(98% 0.014 180.72);
+	--color-neutral: oklch(20% 0 0);
+	--color-neutral-content: oklch(98% 0 0);
+	--color-info: oklch(62% 0.214 259.815);
+	--color-info-content: oklch(97% 0.014 254.604);
+	--color-success: oklch(72% 0.219 149.579);
+	--color-success-content: oklch(98% 0.018 155.826);
+	--color-warning: oklch(70% 0.213 47.604);
+	--color-warning-content: oklch(98% 0.016 73.684);
+	--color-error: hsl(348, 100%, 50%);
+	--color-error-content: oklch(27% 0.105 12.094);
+}
+
+@theme {
+	--font-body:
+		"Host Grotesk", system-ui, -apple-system, BlinkMacSystemFont,
+		"Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+		"Helvetica Neue", sans-serif;
+	--font-display: "Radio Canada Big", var(--font-body);
+
+	/* General */
+	--color-vert-pink: hsl(302, 100%, 76%);
+	--color-vert-pink-alt: hsl(302, 100%, 50%);
+	--color-vert-pink-muted: hsl(302, 98%, 42%);
+	--color-vert-red: hsl(348, 100%, 80%);
+	--color-vert-red-alt: hsl(348, 100%, 50%);
+	--color-vert-purple: hsl(264, 100%, 81%);
+	--color-vert-purple-alt: hsl(264, 100%, 50%);
+	--color-vert-blue: hsl(220, 100%, 78%);
+	--color-vert-blue-alt: hsl(220, 100%, 50%);
+	--color-vert-green: hsl(140, 70%, 74%);
+	--color-vert-green-alt: hsl(140, 66%, 55%);
 
 	/*  backgrounds */
 	--bg: hsl(0, 0%, 95%);
@@ -114,32 +174,21 @@
 	--bg-button: var(--bg-panel-highlight);
 	--bg-badge: var(--accent-pink);
 	--bg-input: #e0e0e0;
-
 	--shadow-panel: 0 2px 4px 0 hsla(0, 0%, 0%, 0.15);
 }
 
-:root[data-theme="dark"] {
-	/*  general */
-	--accent-pink: hsl(302, 100%, 76%);
-	--accent-pink-alt: hsl(302, 100%, 50%);
-	--accent-red: hsl(348, 100%, 80%);
-	--accent-red-alt: hsl(348, 100%, 50%);
-	--accent-purple: hsl(264, 100%, 81%);
-	--accent-purple-alt: hsl(264, 100%, 50%);
-	--accent-blue: hsl(220, 100%, 78%);
-	--accent-blue-alt: hsl(220, 100%, 50%);
-	--accent-green: hsl(140, 70%, 74%);
-	--accent-green-alt: hsl(140, 64%, 42%);
-	--accent: var(--accent-pink);
-	--accent-alt: var(--accent-pink-alt);
-
-	/*  foregrounds */
-	--fg: hsl(0, 0%, 100%);
-	--fg-muted: hsla(0, 0%, 100%, 0.65);
-	--fg-on-accent: hsl(0, 0%, 0%);
-	--fg-on-badge: hsl(0, 0%, 0%);
-	--fg-accent: var(--accent);
-	--fg-failure: var(--accent-red);
+[data-theme="dark"] {
+	/* General */
+	--color-vert-pink: hsl(302, 100%, 76%);
+	--color-vert-pink-alt: hsl(302, 100%, 50%);
+	--color-vert-red: hsl(348, 100%, 80%);
+	--color-vert-red-alt: hsl(348, 100%, 50%);
+	--color-vert-purple: hsl(264, 100%, 81%);
+	--color-vert-purple-alt: hsl(264, 100%, 50%);
+	--color-vert-blue: hsl(220, 100%, 78%);
+	--color-vert-blue-alt: hsl(220, 100%, 50%);
+	--color-vert-green: hsl(140, 70%, 74%);
+	--color-vert-green-alt: hsl(140, 64%, 42%);
 
 	/*  backgrounds */
 	--bg: hsla(220, 5%, 15%, 40%);
@@ -201,50 +250,13 @@
 	--bg-badge: var(--accent-pink);
 
 	--shadow-panel: 0 4px 6px 0 hsla(0, 0%, 0%, 0.15);
-
-	color-scheme: dark;
 }
 
-::selection {
-	@apply bg-accent-blue text-on-accent;
+@utility font-display {
+	font-family: var(--font-display);
 }
-
-body {
-	@apply text-foreground font-body font-semibold select-none cursor-default overflow-hidden scrollbar-thin;
-	background: var(--bg);
-}
-
-select {
-	@apply appearance-none;
-}
-
-.btn {
-	@apply bg-button flex items-center justify-center overflow-hidden relative px-3 h-8 rounded-xl font-medium focus:!outline-none duration-200 disabled:opacity-50 disabled:pointer-events-none;
-	transition:
-		opacity 0.2s ease,
-		transform 0.2s ease,
-		background-color 0.2s ease;
-}
-
-.btn-ghost {
-	@apply bg-transparent hover:bg-neutral-50/10 focus:bg-neutral-50/10;
-}
-
-/* .btn-primary {
-	@apply bg-button flex items-center justify-center overflow-hidden relative px-3 h-8 rounded-xl font-medium focus:!outline-none duration-200 disabled:opacity-50 disabled:pointer-events-none;
-	transition:
-		opacity 0.2s ease,
-		transform 0.2s ease,
-		background-color 0.2s ease;
-} */
-
-.btn-primary {
-	--btn-color: var(--color-primary);
-	--btn-fg: var(--color-primary-content);
-}
-
-.btn.highlight {
-	@apply bg-accent text-on-accent;
+@utility font-body {
+	font-family: var(--font-body);
 }
 
 h1,
@@ -256,27 +268,25 @@ h6 {
 	@apply font-display font-semibold;
 }
 
-code {
-	@apply font-mono bg-gray-200 rounded-md px-1 dark:bg-panel-alt dark:text-white;
+.btn {
+	@apply cursor-default;
+
+	&:active {
+		@apply translate-none scale-95;
+		transition:
+			opacity 0.2s ease,
+			transform 5s ease,
+			background-color 0.2s ease;
+	}
+
+	@media (hover: hover) {
+		&:hover {
+			--btn-bg: var(--btn-color, var(--color-base-200));
+		}
+	}
 }
 
-p a {
-	@apply text-accent underline;
-}
-
-input[type="text"],
-select.dropdown {
-	@apply w-full p-3 rounded-lg bg-panel border-2 border-button pl-3 pr-[4rem];
-}
-
-input[type="text"]::placeholder {
-	@apply text-muted font-normal;
-}
-
-input[type="text"]:focus {
-	@apply outline outline-accent outline-2;
-}
-
-hr {
-	@apply border-separator;
+.btn.btn-transparent {
+	@apply hover:bg-neutral-50/10;
+	--btn-border: #0000;
 }

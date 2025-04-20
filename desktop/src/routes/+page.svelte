@@ -69,7 +69,7 @@
 			{/if}
 			<button
 				type="button"
-				class="btn btn-ghost text-sm ml-auto opacity-80 transition-all duration-150 gap-1 items-stretch"
+				class="btn btn-sm btn-ghost btn-square btn-transparent text-sm ml-auto opacity-80 transition-all duration-150 gap-1"
 				onclick={() => (showFormats = !showFormats)}
 				aria-expanded={showFormats}
 				title={showFormats
@@ -90,23 +90,30 @@
 				{#each Object.entries(status) as [key, s]}
 					{@const Icon = s.icon}
 					<div
-						class="file-category-card flex-1 min-h-28 min-w-50 max-w-full"
+						class="bg-neutral-50/8 rounded-2xl p-3 shadow-lg flex flex-col flex-1 min-h-28 min-w-50 max-w-full"
 					>
-						<div class="file-category-card-inner">
+						<div
+							class="flex items-center justify-start gap-2 text-xl"
+						>
 							<div
-								class={clsx("icon-container", {
-									"bg-accent-blue": key === "Images",
-									"bg-accent-purple": key === "Audio",
-									"bg-accent-green": key === "Documents",
-									"bg-accent-red": key === "Video",
-								})}
+								class={clsx(
+									"p-2.5 rounded-full text-black",
+									{
+										"bg-vert-blue": key === "Images",
+										"bg-vert-purple": key === "Audio",
+										"bg-vert-green": key === "Documents",
+										"bg-vert-red": key === "Video",
+									},
+								)}
 							>
 								<Icon size="18" />
 							</div>
 							<span>{key}</span>
 						</div>
 
-						<div class="file-category-card-content mt-2">
+						<div
+							class=" flex flex-col text-start justify-start mt-2 font-normal text-sm"
+						>
 							{#if s.ready === "yes"}
 								<p>Available</p>
 								<p>
@@ -123,42 +130,3 @@
 		{/if}
 	</div>
 </main>
-
-<style>
-	@reference "tailwindcss";
-	@reference "../app.css";
-
-	.formats-container {
-		transition: all 0.3s ease-in-out;
-		overflow: hidden;
-		margin-top: 0.75rem;
-		max-height: 500px;
-		opacity: 1;
-	}
-
-	.formats-container.hidden {
-		opacity: 0;
-		max-height: 0;
-		margin-top: 0;
-	}
-
-	.file-category-card {
-		@apply bg-neutral-50/8 rounded-2xl p-3 shadow-lg flex flex-col;
-	}
-
-	.file-category-card p {
-		@apply font-normal text-start text-sm;
-	}
-
-	.file-category-card-inner {
-		@apply flex items-center justify-start gap-2 text-xl;
-	}
-
-	.file-category-card-content {
-		@apply flex flex-col text-center justify-start;
-	}
-
-	.icon-container {
-		@apply p-2.5 rounded-full text-on-accent;
-	}
-</style>
