@@ -39,17 +39,6 @@ anyhow = { workspace = true }
 vertd = { path = "../../vertd" }
 
 [target."cfg(target_os = \"macos\")".dependencies]
-objc2 = { version = "0.6.0" }
-objc2-core-foundation = { version = "0.3.0", default-features = false, features = [
-  "std",
-] }
-objc2-foundation = { version = "0.3.0", features = [
-  "NSArray",
-  "NSString",
-  "NSEnumerator",
-  "NSGeometry",
-] }
-objc2-core-graphics = "0.3.0"
 objc2-app-kit = { version = "0.3.0", features = [] }
 
 

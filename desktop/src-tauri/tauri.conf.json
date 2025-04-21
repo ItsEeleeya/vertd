@@ -51,8 +51,8 @@
 		"shortDescription": "The file converter you'll love.",
 		"publisher": "vert.sh",
 		"homepage": "verth.sh",
-		"copyright": "AGPL-3.0",
-		"license": "© 2025 VERT.",
+		"license": "AGPL-3.0",
+		"copyright": "© 2025 VERT.",
 		"category": "Utility",
 		"icon": [
 			"icons/32x32.png",

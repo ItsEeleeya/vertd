@@ -50,7 +50,7 @@
 
 	<div
 		data-tauri-drag-region
-		class="flex-1 h-3 max-w-md flex justify-center items-center text-neutral-50/90 px-2"
+		class="flex-1 h-3 max-w-md flex justify-center items-center text-neutral-50/80 px-2"
 	>
 		<Logo
 			aria-hidden="true"
