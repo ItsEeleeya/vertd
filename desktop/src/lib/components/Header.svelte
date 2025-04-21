@@ -65,7 +65,7 @@
 		<button
 			type="button"
 			onclick={showMenu}
-			class="btn btn-square btn-xs btn-ghost btn-transparent rounded-lg!"
+			class="btn btn-square btn-xs btn-ghost btn-transparent"
 		>
 			<LucideEllipsis
 				size="18"

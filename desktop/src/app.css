@@ -36,13 +36,6 @@
 	--noise: 0;
 }
 
-[platform="macos"] {
-	#layout_container,
-	:root {
-		@apply rounded-[180px] border-[1px] border-neutral-50/20;
-	}
-}
-
 @plugin "daisyui/theme" {
 	name: "light";
 	default: true;
@@ -120,47 +113,47 @@
 	--bg: hsl(0, 0%, 95%);
 	--bg-gradient: linear-gradient(
 		to bottom,
-		var(--accent-pink),
+		var(--colorcolor-vert-pink),
 		hsla(303, 100%, 50%, 0) 100%
 	);
 	--bg-gradient-pink: linear-gradient(
 		to bottom,
-		var(--accent-pink),
+		var(--color-vert-pink),
 		hsla(303, 100%, 50%, 0) 25%
 	);
 	--bg-gradient-pink-alt: linear-gradient(
 		to top,
-		var(--accent-pink),
+		var(--color-vert-pink),
 		hsl(303, 100%, 91%) 100%
 	);
 	--bg-gradient-red: linear-gradient(
 		to bottom,
-		var(--accent-red),
+		var(--color-vert-red),
 		hsla(348, 100%, 50%, 0) 25%
 	);
 	--bg-gradient-red-alt: linear-gradient(
 		to top,
-		var(--accent-red),
+		var(--color-vert-red),
 		hsl(348, 100%, 91%) 100%
 	);
 	--bg-gradient-purple: linear-gradient(
 		to bottom,
-		var(--accent-purple),
+		var(--color-vert-purple),
 		hsla(264, 100%, 50%, 0) 25%
 	);
 	--bg-gradient-purple-alt: linear-gradient(
 		to top,
-		var(--accent-purple),
+		var(--color-vert-purple),
 		hsl(264, 100%, 91%) 100%
 	);
 	--bg-gradient-blue: linear-gradient(
 		to bottom,
-		var(--accent-blue),
+		var(--color-vert-blue),
 		hsla(220, 100%, 50%, 0) 25%
 	);
 	--bg-gradient-blue-alt: linear-gradient(
 		to top,
-		var(--accent-blue),
+		var(--color-vert-blue),
 		hsl(220, 100%, 91%) 100%
 	);
 	--bg-gradient-image: linear-gradient(
@@ -205,7 +198,7 @@
 	);
 	--bg-gradient-pink-alt: linear-gradient(
 		to top,
-		var(--accent-pink),
+		var(--color-vert-pink),
 		hsl(303, 100%, 91%) 100%
 	);
 	--bg-gradient-red: linear-gradient(
@@ -215,7 +208,7 @@
 	);
 	--bg-gradient-red-alt: linear-gradient(
 		to top,
-		var(--accent-red),
+		var(--color-vert-red),
 		hsl(348, 100%, 91%) 100%
 	);
 	--bg-gradient-purple: linear-gradient(
@@ -225,7 +218,7 @@
 	);
 	--bg-gradient-purple-alt: linear-gradient(
 		to top,
-		var(--accent-purple),
+		var(--color-vert-purple),
 		hsl(264, 100%, 91%) 100%
 	);
 	--bg-gradient-blue: linear-gradient(
@@ -235,7 +228,7 @@
 	);
 	--bg-gradient-blue-alt: linear-gradient(
 		to top,
-		var(--accent-blue),
+		var(--color-vert-blue),
 		hsl(220, 100%, 91%) 100%
 	);
 	--bg-gradient-image: linear-gradient(
@@ -247,7 +240,7 @@
 	--bg-panel-highlight: hsl(220, 2%, 32%);
 	--bg-separator: hsl(220, 4%, 28%);
 	--bg-button: hsl(220, 6%, 34%);
-	--bg-badge: var(--accent-pink);
+	--bg-badge: var(--color-vert-pink);
 
 	--shadow-panel: 0 4px 6px 0 hsla(0, 0%, 0%, 0.15);
 }

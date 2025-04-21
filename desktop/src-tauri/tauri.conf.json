@@ -29,9 +29,7 @@
 				"transparent": true,
 				"shadow": false,
 				"windowEffects": {
-					"state": "active",
-					"radius": 28,
-					"effects": ["underWindowBackground", "mica"]
+					"effects": ["mica"]
 				},
 				"trafficLightPosition": {
 					"x": 16,

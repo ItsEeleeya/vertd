@@ -1,5 +1,5 @@
 use error::AppError;
-use tauri::WebviewWindow;
+use tauri::{Manager, RunEvent, WebviewWindow};
 use tauri_plugin_window_state::StateFlags;
 
 mod commands;
@@ -53,22 +53,16 @@ pub fn run() {
         .setup(move |app| {
             specta_builder.mount_events(app);
 
-            unsafe {
-                platform::say_hello();
-            }
-
             // TODO: Add an option for using default decoration on macOS.
-            // #[cfg(target_os = "macos")]
-            // app.webview_windows()
-            //     .iter()
-            //     .try_for_each(|(_, window)| unsafe {
-            //         let nswindow = window.objc2_nswindow()?;
-            //         nswindow.setOpaque(true);
-            //         nswindow.setCollectionBehavior(
-            //             objc2_app_kit::NSWindowCollectionBehavior::FullScreenNone,
-            //         );
-            //         Ok::<(), tauri::Error>(())
-            //     })?;
+            #[cfg(target_os = "macos")]
+            app.webview_windows()
+                .iter()
+                .try_for_each(|(_, window)| unsafe {
+                    window.objc2_nswindow()?.setCollectionBehavior(
+                        objc2_app_kit::NSWindowCollectionBehavior::FullScreenNone,
+                    );
+                    platform::apply_window_chrome(window, 20.0)
+                })?;
 
             Ok(())
         })

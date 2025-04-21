@@ -12,7 +12,7 @@
 	onMount(() => getCurrentWindow().show());
 </script>
 
-<div id="layout_container" class="w-screen h-screen bg-vert-graident hidden">
+<div id="layout_container" class="w-screen h-screen bg-vert-graident">
 	<Header />
 	<div class="pt-11 h-full">
 		<slot />
