@@ -1,9 +1,10 @@
 use error::AppError;
-use tauri::{Manager, WebviewWindow, Wry};
+use tauri::WebviewWindow;
 use tauri_plugin_window_state::StateFlags;
 
 mod commands;
 mod error;
+mod platform;
 
 pub type AppResult<T> = std::result::Result<T, AppError>;
 
@@ -51,6 +52,10 @@ pub fn run() {
         .invoke_handler(specta_builder.invoke_handler())
         .setup(move |app| {
             specta_builder.mount_events(app);
+
+            unsafe {
+                platform::say_hello();
+            }
 
             // TODO: Add an option for using default decoration on macOS.
             // #[cfg(target_os = "macos")]

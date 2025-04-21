@@ -16,6 +16,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
+swift-rs = { version = "1.0.5", features = ["build"] }
 
 [dependencies]
 tauri = { version = "2.4.1", features = ["macos-private-api", "specta"] }
@@ -28,6 +29,7 @@ tauri-plugin-single-instance = "2.2.3"
 tauri-plugin-store = "2.2.0"
 tauri-plugin-window-state = "2.2.2"
 tauri-plugin-prevent-default = "1.2.1"
+swift-rs = "1.0.5"
 
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -37,7 +39,19 @@ anyhow = { workspace = true }
 vertd = { path = "../../vertd" }
 
 [target."cfg(target_os = \"macos\")".dependencies]
-objc2-app-kit = { version = "0.3.0" }
+objc2 = { version = "0.6.0" }
+objc2-core-foundation = { version = "0.3.0", default-features = false, features = [
+  "std",
+] }
+objc2-foundation = { version = "0.3.0", features = [
+  "NSArray",
+  "NSString",
+  "NSEnumerator",
+  "NSGeometry",
+] }
+objc2-core-graphics = "0.3.0"
+objc2-app-kit = { version = "0.3.0", features = [] }
+
 
 [profile.release]
 panic = "abort"   # Strip expensive panic clean-up logic
