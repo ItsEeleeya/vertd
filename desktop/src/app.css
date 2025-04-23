@@ -59,8 +59,8 @@
 	--color-success-content: oklch(37% 0.077 168.94);
 	--color-warning: oklch(82% 0.189 84.429);
 	--color-warning-content: oklch(41% 0.112 45.904);
-	--color-error: hsl(348, 100%, 50%);
-	--color-error-content: oklch(27% 0.105 12.094);
+	--color-error: oklch(71.76% 0.221 22.18);
+	--color-error-content: oklch(0% 0 0);
 }
 
 @plugin "daisyui/theme" {
@@ -85,8 +85,8 @@
 	--color-success-content: oklch(98% 0.018 155.826);
 	--color-warning: oklch(70% 0.213 47.604);
 	--color-warning-content: oklch(98% 0.016 73.684);
-	--color-error: hsl(348, 100%, 50%);
-	--color-error-content: oklch(27% 0.105 12.094);
+	--color-error: oklch(71.76% 0.221 22.18);
+	--color-error-content: oklch(0% 0 0);
 }
 
 @theme {
@@ -266,10 +266,6 @@ h6 {
 
 	&:active {
 		@apply translate-none scale-95;
-		transition:
-			opacity 0.2s ease,
-			transform 5s ease,
-			background-color 0.2s ease;
 	}
 
 	@media (hover: hover) {
