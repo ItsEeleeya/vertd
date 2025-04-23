@@ -55,7 +55,7 @@
 
 <main data-tauri-drag-region class="h-full flex flex-col *:px-3 *:w-full">
 	<div data-tauri-drag-region class="grow min-h-1/3 pt-1 pb-3">
-		<DropArea />
+		<DropArea expanded={!showFormats} />
 	</div>
 	<div data-tauri-drag-region>
 		<div data-tauri-drag-region class="w-full flex items-center pb-3">
@@ -84,7 +84,7 @@
 		{#if showFormats}
 			<div
 				data-tauri-drag-region
-				class="flex gap-3 flex-wrap justify-center items-stretch max-w-2xl pb-3"
+				class="flex gap-3 flex-wrap justify-center items-stretch max-w-2xl pb-3.5"
 				transition:slide={{ duration: 200 }}
 			>
 				{#each Object.entries(status) as [key, s]}
@@ -115,9 +115,8 @@
 							class=" flex flex-col text-start justify-start mt-2 font-normal text-sm"
 						>
 							{#if s.ready === "yes"}
-								<p>Available</p>
 								<p>
-									<b>Supported formats:</b>
+									<b>Supported formats</b>
 									{s.formats}
 								</p>
 							{:else}

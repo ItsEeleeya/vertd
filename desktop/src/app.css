@@ -283,3 +283,7 @@ h6 {
 	@apply hover:bg-neutral-50/10;
 	--btn-border: #0000;
 }
+
+.select {
+	@apply outline-none border-transparent;
+}

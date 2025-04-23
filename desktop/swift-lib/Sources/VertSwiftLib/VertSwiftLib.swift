@@ -27,7 +27,6 @@ func applySwiftUIWindowChrome(to nswindowPtr: UnsafeRawPointer, radius cornerRad
     window.isOpaque = false
     window.backgroundColor = .clear
     window.titlebarAppearsTransparent = true
-    window.titleVisibility = .hidden
     window.hasShadow = true
 
     guard let contentView = window.contentView else {

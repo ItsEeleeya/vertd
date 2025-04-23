@@ -7,14 +7,14 @@
 	import { onMount } from "svelte";
 	import { type } from "@tauri-apps/plugin-os";
 
+	const { children } = $props();
 	document.documentElement.setAttribute("platform", type());
-
 	onMount(() => getCurrentWindow().show());
 </script>
 
 <div id="layout_container" class="w-screen h-screen bg-vert-graident">
 	<Header />
-	<div class="pt-11 h-full">
-		<slot />
+	<div class="pt-13 h-full">
+		{@render children?.()}
 	</div>
 </div>

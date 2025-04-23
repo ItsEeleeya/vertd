@@ -1,5 +1,5 @@
 use error::AppError;
-use tauri::{Manager, RunEvent, WebviewWindow};
+use tauri::{Manager, WebviewWindow};
 use tauri_plugin_window_state::StateFlags;
 
 mod commands;

@@ -29,7 +29,6 @@ let package = Package(
                     name: "SwiftRs",
                     package: "swift-rs"
                 ),
-                
             ],
         ),
     ],
