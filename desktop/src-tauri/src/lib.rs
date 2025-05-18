@@ -53,16 +53,14 @@ pub fn run() {
         .setup(move |app| {
             specta_builder.mount_events(app);
 
-            // TODO: Add an option for using default decoration on macOS.
             #[cfg(target_os = "macos")]
-            app.webview_windows()
-                .iter()
-                .try_for_each(|(_, window)| unsafe {
-                    window.objc2_nswindow()?.setCollectionBehavior(
-                        objc2_app_kit::NSWindowCollectionBehavior::FullScreenNone,
-                    );
-                    platform::apply_window_chrome(window, 20.0)
-                })?;
+            unsafe {
+                let window = app.get_webview_window("main").expect("No main window");
+                window.objc2_nswindow()?.setCollectionBehavior(
+                    objc2_app_kit::NSWindowCollectionBehavior::FullScreenNone,
+                );
+                platform::apply_swiftui_window_chrome(window.ns_window()?, 17.0);
+            }
 
             Ok(())
         })
