@@ -5,7 +5,14 @@ use crate::converters::FileFormat;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
-use super::MediaKind;
+// Added import for MediaType
+use crate::converters::MediaType;
+use super::MediaKind; // MediaKind is different from MediaType, keep both for now.
+
+// Define the new trait
+pub trait MediaTypeSpecificOptions: Debug + Send + Sync + Clone + Serialize + Type + 'static {
+    const MEDIA_TYPE: MediaType;
+}
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
@@ -23,6 +30,10 @@ pub struct VideoConversionOptions {
     // pub gpu_acceleration: Option<String>, // Example: Could add GPU options later
 }
 
+impl MediaTypeSpecificOptions for VideoConversionOptions {
+    const MEDIA_TYPE: MediaType = MediaType::Video;
+}
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
 pub struct ImageConversionOptions {
@@ -35,6 +46,10 @@ pub struct ImageConversionOptions {
     /// Format-specific: WebP lossless encoding.
     pub webp_lossless: Option<bool>,
     // Add other format-specific options as needed
+}
+
+impl MediaTypeSpecificOptions for ImageConversionOptions {
+    const MEDIA_TYPE: MediaType = MediaType::Image;
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
@@ -67,6 +82,10 @@ pub struct AudioConversionOptions {
     pub sample_rate: Option<u32>,
 }
 
+impl MediaTypeSpecificOptions for AudioConversionOptions {
+    const MEDIA_TYPE: MediaType = MediaType::Audio;
+}
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
 pub struct DocumentConversionOptions {
@@ -75,6 +94,10 @@ pub struct DocumentConversionOptions {
     /// For text output: line wrapping width.
     pub line_wrap: Option<u32>,
     // Add other options specific to document conversions
+}
+
+impl MediaTypeSpecificOptions for DocumentConversionOptions {
+    const MEDIA_TYPE: MediaType = MediaType::Document;
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Type)]
