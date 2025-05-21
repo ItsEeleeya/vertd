@@ -1,8 +1,10 @@
+use converters::FileFormat;
 use error::AppError;
 use tauri::{Manager, WebviewWindow};
 use tauri_plugin_window_state::StateFlags;
 
 mod commands;
+mod converters;
 mod error;
 mod platform;
 
@@ -52,7 +54,6 @@ pub fn run() {
         .invoke_handler(specta_builder.invoke_handler())
         .setup(move |app| {
             specta_builder.mount_events(app);
-
             #[cfg(target_os = "macos")]
             unsafe {
                 let window = app.get_webview_window("main").expect("No main window");

@@ -40,7 +40,7 @@
 </script>
 
 <div
-	class="size-full rounded-2xl border-2 border-dashed border-neutral-50/10 hover:border-neutral-50/10 duration-200 bg-secondary/5 hover:bg-secondary/10 active:bg-secondary/15 active:border-neutral-50/20 flex flex-col items-center justify-center gap-2 cursor-pointer shadow-lg shadow-primary/5"
+	class="size-full rounded-xl border-2 border-dashed border-neutral-50/10 hover:border-neutral-50/10 duration-200 bg-secondary/5 hover:bg-secondary/10 active:bg-secondary/15 active:border-neutral-50/20 flex flex-col items-center justify-center gap-2 cursor-pointer shadow-lg shadow-primary/5"
 	class:bg-transparent={expanded}
 	class:border-transparent={expanded}
 	class:shadow-none={expanded}

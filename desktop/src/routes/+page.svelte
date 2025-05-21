@@ -90,7 +90,7 @@
 				{#each Object.entries(status) as [key, s]}
 					{@const Icon = s.icon}
 					<div
-						class="bg-neutral-50/8 rounded-2xl p-3 shadow-lg flex flex-col flex-1 min-h-28 min-w-50 max-w-full"
+						class="bg-neutral-50/8 rounded-xl p-3 shadow-lg flex flex-col flex-1 min-h-28 min-w-50 max-w-full"
 					>
 						<div
 							class="flex items-center justify-start gap-2 text-xl"
