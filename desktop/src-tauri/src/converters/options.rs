@@ -4,8 +4,9 @@ use std::fmt::Debug;
 use crate::converters::FileFormat;
 use serde::{Deserialize, Serialize};
 use specta::Type;
+use strum::{Display, IntoStaticStr};
 
-use super::MediaKind;
+use super::{MediaKind, error::ConverterError};
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
@@ -85,12 +86,7 @@ pub struct PdfPermissions {
     pub allow_editing: bool,
 }
 
-// pub trait ConversionOptions: Debug + Send + Sync + 'static + Default + Serialize + Type {}
-
-// --- Wrapper Enum ---
-// This enum will be used in the Tauri command signature and ConversionTask.
-// Specta will generate a TypeScript discriminated union from this.
-#[derive(Debug, Clone, Serialize, Deserialize, Type)]
+#[derive(Debug, Clone, Serialize, Deserialize, Type, IntoStaticStr)]
 #[serde(tag = "type", content = "data", rename_all = "camelCase")] // Crucial for TS union
 pub enum ConversionOptions {
     Video(VideoConversionOptions),
@@ -98,8 +94,12 @@ pub enum ConversionOptions {
     Audio(AudioConversionOptions),
     Document(DocumentConversionOptions),
 }
-// Helper to get the default options for a given media type, wrapped in the enum
-// This might be useful within converter implementations or the manager.
+
+impl_try_from_conversion_options!(VideoConversionOptions, Video);
+impl_try_from_conversion_options!(AudioConversionOptions, Audio);
+impl_try_from_conversion_options!(ImageConversionOptions, Image);
+impl_try_from_conversion_options!(DocumentConversionOptions, Document);
+
 impl ConversionOptions {
     pub fn default_for(media_type: crate::converters::MediaKind) -> Self {
         match media_type {
@@ -109,58 +109,6 @@ impl ConversionOptions {
             crate::converters::MediaKind::Document => {
                 ConversionOptions::Document(Default::default())
             }
-        }
-    }
-}
-
-impl TryFrom<ConversionOptions> for VideoConversionOptions {
-    type Error = anyhow::Error;
-
-    fn try_from(value: ConversionOptions) -> Result<Self, Self::Error> {
-        match value {
-            ConversionOptions::Video(opts) => Ok(opts),
-            _ => Err(anyhow::anyhow!(
-                "Expected video options but got different type"
-            )),
-        }
-    }
-}
-
-impl TryFrom<ConversionOptions> for AudioConversionOptions {
-    type Error = anyhow::Error;
-
-    fn try_from(value: ConversionOptions) -> Result<Self, Self::Error> {
-        match value {
-            ConversionOptions::Audio(opts) => Ok(opts),
-            _ => Err(anyhow::anyhow!(
-                "Expected audio options but got different type"
-            )),
-        }
-    }
-}
-
-impl TryFrom<ConversionOptions> for ImageConversionOptions {
-    type Error = anyhow::Error;
-
-    fn try_from(value: ConversionOptions) -> Result<Self, Self::Error> {
-        match value {
-            ConversionOptions::Image(opts) => Ok(opts),
-            _ => Err(anyhow::anyhow!(
-                "Expected image options but got different type"
-            )),
-        }
-    }
-}
-
-impl TryFrom<ConversionOptions> for DocumentConversionOptions {
-    type Error = anyhow::Error;
-
-    fn try_from(value: ConversionOptions) -> Result<Self, Self::Error> {
-        match value {
-            ConversionOptions::Document(opts) => Ok(opts),
-            _ => Err(anyhow::anyhow!(
-                "Expected document options but got different type"
-            )),
         }
     }
 }

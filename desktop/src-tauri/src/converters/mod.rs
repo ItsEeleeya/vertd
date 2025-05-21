@@ -1,10 +1,12 @@
 #![allow(unused)]
 #[macro_use]
 mod macros;
+mod error;
 mod options;
 mod progress;
 mod video;
 
+use error::ConverterError;
 use options::{
     AudioConversionOptions, ConversionOptions, DocumentConversionOptions, ImageConversionOptions,
     VideoConversionOptions,
@@ -27,6 +29,8 @@ use strum::{Display, EnumString};
 use tokio::sync::mpsc;
 use video::VideoConverter;
 
+pub type ConverterResult<T> = std::result::Result<T, ConverterError>;
+
 #[derive(
     Debug, Clone, Copy, PartialEq, Eq, Hash, EnumString, Display, Serialize, Deserialize, Type,
 )]
@@ -40,20 +44,20 @@ pub enum MediaKind {
 
 define_file_formats! {
     MediaKind::Video => {
-        MP4("mp4"), WebM("webm"), Gif("gif"), AVI("avi"), MKV("mkv"),
-        WMV("wmv"), MOV("mov"), MTS("mts"), FLV("flv"), OGV("ogv"),
+        Mp4("mp4"), Webm("webm"), Gif("gif"), Avi("avi"), Mkv("mkv"),
+        Wmv("wmv"), Mov("mov"), Mts("mts"), Flv("flv"), Ogv("ogv"),
     },
     MediaKind::Audio => {
-        MP3("mp3"), WAV("wav"), FLAC("flac"), OGG("ogg"), AAC("aac"),
-        M4A("m4a"), OPUS("opus"),
+        Mp3("mp3"), Wav("wav"), Flac("flac"), Ogg("ogg"), Aac("aac"),
+        M4a("m4a"), Opus("opus"),
     },
     MediaKind::Image => {
-        JPG("jpg"), JPEG("jpg"), PNG("png"), WEBP("webp"), BMP("bmp"),
-        TIFF("tiff"), AVIF("avif"), ICO("ico"),
+        Jpg("jpg"), Jpeg("jpg"), Png("png"), Webp("webp"), Bmp("bmp"),
+        Tiff("tiff"), Avif("avif"), Ico("ico"),
     },
     MediaKind::Document => {
-        PDF("pdf"), DOCX("docx"), ODT("odt"), TXT("txt"), HTML("html"),
-        MD("md"), EPUB("epub"),
+        Pdf("pdf"), Docx("docx"), Odt("odt"), Txt("txt"), Html("html"),
+        Md("md"), Epub("epub"),
     }
 }
 
@@ -125,26 +129,25 @@ impl ConversionTask {
     /// ```rust
     /// let video_opts = task.get_typed_options::<VideoConversionOptions>()?;
     /// ```
-    pub fn get_typed_options<T>(&self) -> anyhow::Result<T>
+    pub fn get_typed_options<T>(&self) -> ConverterResult<T>
     where
-        T: TryFrom<ConversionOptions, Error = anyhow::Error>,
+        T: TryFrom<ConversionOptions, Error = ConverterError>,
     {
         self.get_options().try_into()
     }
 
     /// Ensures that the task's options match its media kind.
-    pub fn validate_options(&self) -> anyhow::Result<()> {
+    pub fn validate_options(&self) -> ConverterResult<()> {
         match (self.kind, &self.options) {
             (MediaKind::Video, Some(ConversionOptions::Video(_))) => Ok(()),
             (MediaKind::Audio, Some(ConversionOptions::Audio(_))) => Ok(()),
             (MediaKind::Image, Some(ConversionOptions::Image(_))) => Ok(()),
             (MediaKind::Document, Some(ConversionOptions::Document(_))) => Ok(()),
             (_, None) => Ok(()), // No options is valid
-            (kind, Some(opts)) => Err(anyhow::anyhow!(
-                "Media kind {:?} does not match options type {:?}",
-                kind,
-                opts
-            )),
+            (kind, actual_opts) => Err(ConverterError::MismatchedMediaKind {
+                expected: kind,
+                context: format!("task validation (ID: {})", self.id),
+            }),
         }
     }
 }
@@ -163,7 +166,10 @@ pub trait Converter: Debug + Send + Sync {
         format.default_extension()
     }
 
-    async fn convert(&self, task: Arc<ConversionTask>) -> Result<mpsc::Receiver<ProgressUpdate>>;
+    async fn convert(
+        &self,
+        task: Arc<ConversionTask>,
+    ) -> ConverterResult<mpsc::Receiver<ProgressUpdate>>;
 }
 
 // pub struct Manager {

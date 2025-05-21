@@ -14,26 +14,28 @@ use tokio::process::Command;
 use tokio::sync::mpsc;
 use tokio::time::{Duration as TokioDuration, Instant};
 
+use super::ConverterResult;
+
 const VIDEO_INPUT_FORMATS: &[FileFormat] = &[
-    FileFormat::MP4,
-    FileFormat::WebM,
-    FileFormat::AVI,
-    FileFormat::MKV,
-    FileFormat::WMV,
-    FileFormat::MOV,
-    FileFormat::MTS,
-    FileFormat::FLV,
-    FileFormat::OGV,
-    FileFormat::GIF,
+    FileFormat::Mp4,
+    FileFormat::Webm,
+    FileFormat::Avi,
+    FileFormat::Mkv,
+    FileFormat::Wmv,
+    FileFormat::Mov,
+    FileFormat::Mts,
+    FileFormat::Flv,
+    FileFormat::Ogv,
+    FileFormat::Gif,
 ];
 
 const VIDEO_OUTPUT_FORMATS: &[FileFormat] = &[
-    FileFormat::MP4,
-    FileFormat::WebM,
-    FileFormat::AVI,
-    FileFormat::MKV,
-    FileFormat::MOV,
-    FileFormat::GIF,
+    FileFormat::Mp4,
+    FileFormat::Webm,
+    FileFormat::Avi,
+    FileFormat::Mkv,
+    FileFormat::Mov,
+    FileFormat::Gif,
 ];
 
 #[derive(Debug, Clone)]
@@ -113,7 +115,12 @@ impl Converter for VideoConverter {
         VIDEO_OUTPUT_FORMATS
     }
 
-    async fn convert(&self, task: Arc<ConversionTask>) -> Result<mpsc::Receiver<ProgressUpdate>> {
+    async fn convert(
+        &self,
+        task: Arc<ConversionTask>,
+    ) -> ConverterResult<mpsc::Receiver<ProgressUpdate>> {
+        let options = task.get_typed_options::<VideoConversionOptions>()?;
+
         todo!()
     }
 }

@@ -67,3 +67,28 @@ macro_rules! define_file_formats {
         }
     };
 }
+
+#[macro_export]
+macro_rules! impl_try_from_conversion_options {
+    // $TargetType: The specific options struct (e.g., VideoConversionOptions)
+    // $Variant: The enum variant in ConversionOptions (e.g., Video)
+    ($TargetType:ty, $Variant:ident) => {
+        impl TryFrom<ConversionOptions> for $TargetType {
+            type Error = $crate::converters::error::ConverterError; // Assuming ConverterError is at this path
+
+            fn try_from(value: ConversionOptions) -> Result<Self, Self::Error> {
+                match value {
+                    // If the enum variant matches what we expect for this $TargetType
+                    $crate::converters::options::ConversionOptions::$Variant(opts) => Ok(opts),
+                    // Otherwise, it's an invalid options type for this conversion
+                    _other => Err(
+                        $crate::converters::error::ConverterError::InternalInvalidOptions(format!(
+                            "Expected {} options but got a different type.",
+                            stringify!($Variant) // Turns the variant identifier into a string
+                        )),
+                    ),
+                }
+            }
+        }
+    };
+}
