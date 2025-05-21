@@ -1,4 +1,3 @@
-use converters::FileFormat;
 use error::AppError;
 use tauri::{Manager, WebviewWindow};
 use tauri_plugin_window_state::StateFlags;

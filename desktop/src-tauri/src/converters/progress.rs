@@ -18,29 +18,28 @@ pub struct VideoProgressDetails {
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
 pub struct AudioProgressDetails {
-    // Example fields - adjust as needed
-    pub time_processed: Option<String>,
-    pub size_kb: Option<u64>,
-    pub speed: Option<f32>, // If applicable
-    pub bitrate_kbit: Option<f64>,
-    pub estimated_duration_secs: Option<f64>,
+    // pub time_processed: Option<String>,
+    // pub size_kb: Option<u64>,
+    // pub speed: Option<f32>,
+    // pub bitrate_kbit: Option<f64>,
+    // pub estimated_duration_secs: Option<f64>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
 pub struct ImageProgressDetails {
-    // Images might finish quickly, maybe just step names?
-    pub current_step: Option<String>, // e.g., "Decoding", "Resizing", "Encoding"
-    // or maybe percentage if multi-frame (GIF) or complex processing
-    pub percentage: Option<f32>,
+    // // Images might finish quickly, maybe just step names?
+    // pub current_step: Option<String>, // e.g., "Decoding", "Resizing", "Encoding"
+    // // or maybe percentage if multi-frame (GIF) or complex processing
+    // pub percentage: Option<f32>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
 pub struct DocumentProgressDetails {
-    pub pages_processed: Option<u32>,
-    pub total_pages: Option<u32>,
-    pub current_step: Option<String>, // maybe "Parsing", "Rendering", "Saving"
+    // pub pages_processed: Option<f32>,
+    // pub total_pages: Option<f32>,
+    // pub current_step: Option<String>, // maybe "Parsing", "Rendering", "Saving"
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
@@ -104,5 +103,21 @@ impl ProgressUpdate {
             status_message: Some("Completed".to_string()),
             details: None,
         }
+    }
+
+    pub fn update_percentage(&mut self, percentage: f32) {
+        self.percentage = percentage;
+    }
+
+    pub fn is_completed(&self) -> bool {
+        matches!(self.status, Some(ProgressStatus::Done))
+    }
+
+    pub fn is_failed(&self) -> bool {
+        matches!(self.status, Some(ProgressStatus::Failed))
+    }
+
+    pub fn update_status_message(&mut self, message: String) {
+        self.status_message = Some(message);
     }
 }
