@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::collections::HashMap;
+use ulid::Ulid;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
@@ -61,7 +62,7 @@ pub enum ProgressStatus {
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
 pub struct ProgressUpdate {
-    pub task_id: String,
+    pub task_id: Ulid,
     #[serde(default)]
     pub percentage: f32,
     pub status: Option<ProgressStatus>,
@@ -71,7 +72,7 @@ pub struct ProgressUpdate {
 
 impl ProgressUpdate {
     pub fn with_details(
-        task_id: String,
+        task_id: Ulid,
         percentage: f32,
         status: Option<String>,
         details: ProgressDetails,
@@ -85,7 +86,7 @@ impl ProgressUpdate {
         }
     }
 
-    pub fn new_error(task_id: String, error_message: String) -> Self {
+    pub fn new_error(task_id: Ulid, error_message: String) -> Self {
         Self {
             task_id,
             percentage: 0.0,
@@ -95,7 +96,7 @@ impl ProgressUpdate {
         }
     }
 
-    pub fn new_done(task_id: String) -> Self {
+    pub fn new_done(task_id: Ulid) -> Self {
         Self {
             task_id,
             percentage: 100.0,

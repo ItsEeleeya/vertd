@@ -31,7 +31,7 @@ log = { workspace = true }
 vertd = { path = "../../vertd" }
 
 tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
-specta = "=2.0.0-rc.22"
+specta = { version = "=2.0.0-rc.22", features = ["ulid"] }
 specta-typescript = "0.0.9"
 tauri-plugin-opener = "2"
 tauri-plugin-os = "2"
@@ -43,6 +43,7 @@ async-trait = "0.1.88"
 swift-rs = "1.0.5"
 strum = "0.27.1"
 strum_macros = "0.27.1"
+ulid = { version = "1.2.1", features = ["serde"] }
 
 [target."cfg(target_os = \"macos\")".dependencies]
 objc2-app-kit = { version = "0.3.0", features = [] }

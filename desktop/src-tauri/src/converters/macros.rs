@@ -27,7 +27,7 @@
 /// }
 #[macro_export]
 macro_rules! define_file_formats {
-    ( $( $media_type:path => { $( $variant:ident($extension:literal) ),* $(,)? } ),* $(,)? ) => {
+    ( $( $media_kind:path => { $( $variant:ident($extension:literal) ),* $(,)? } ),* $(,)? ) => {
 
         // use serde::{Deserialize, Serialize};
         // use $crate::converters::; // Assuming MediaType is in converters module
@@ -44,11 +44,11 @@ macro_rules! define_file_formats {
 
         impl FileFormat {
             /// Determines the general media type of the format.
-            pub fn media_type(&self) -> $crate::converters::MediaKind {
+            pub fn media_kind(&self) -> $crate::converters::MediaKind {
                 match self {
                     $( // Repeat for each media type block
                         $( // Repeat for each format variant
-                            FileFormat::$variant => $media_type,
+                            FileFormat::$variant => $media_kind,
                         )*
                     )*
                 }

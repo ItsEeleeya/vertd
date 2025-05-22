@@ -1,10 +1,14 @@
+#![allow(dead_code)]
+
 use error::AppError;
+use manager::ConversionManager;
 use tauri::{Manager, WebviewWindow};
 use tauri_plugin_window_state::StateFlags;
 
 mod commands;
 mod converters;
 mod error;
+mod manager;
 mod platform;
 
 pub type AppResult<T> = std::result::Result<T, AppError>;
@@ -53,6 +57,9 @@ pub fn run() {
         .invoke_handler(specta_builder.invoke_handler())
         .setup(move |app| {
             specta_builder.mount_events(app);
+
+            app.manage(ConversionManager::new(app.handle()));
+
             #[cfg(target_os = "macos")]
             unsafe {
                 let window = app.get_webview_window("main").expect("No main window");

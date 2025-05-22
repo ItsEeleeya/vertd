@@ -1,4 +1,3 @@
-#![allow(unused)]
 #[macro_use]
 mod macros;
 mod error;
@@ -27,6 +26,7 @@ use std::str::FromStr;
 use std::sync::Arc;
 use strum::{Display, EnumString};
 use tokio::sync::mpsc;
+use ulid::Ulid;
 use video::VideoConverter;
 
 pub type ConverterResult<T> = std::result::Result<T, ConverterError>;
@@ -67,52 +67,32 @@ pub enum Converters {
 
 #[derive(Debug, Clone)]
 pub struct ConversionTask {
-    pub id: String,
+    pub id: Ulid,
     pub kind: MediaKind,
     pub input_path: PathBuf,
+    pub output_path: Option<PathBuf>,
     pub source_format_override: Option<FileFormat>,
-    pub output_path: PathBuf,
     pub target_format: FileFormat,
     pub options: Option<ConversionOptions>,
 }
 
 impl ConversionTask {
-    pub fn new_with_options(
-        id: String,
-        kind: MediaKind,
-        input_path: PathBuf,
-        output_path: PathBuf,
-        target_format: FileFormat,
-        options: ConversionOptions,
-        source_format_override: Option<FileFormat>,
-    ) -> Self {
-        Self {
-            id,
-            kind,
-            input_path,
-            source_format_override,
-            output_path,
-            target_format,
-            options: Some(options),
-        }
-    }
-
     pub fn new(
-        id: String,
         kind: MediaKind,
         input_path: PathBuf,
-        output_path: PathBuf,
+        output_path: Option<PathBuf>,
         target_format: FileFormat,
+        options: Option<ConversionOptions>,
         source_format_override: Option<FileFormat>,
     ) -> Self {
         Self {
-            id,
+            id: Ulid::new(),
             kind,
             input_path,
             source_format_override,
             output_path,
             target_format,
-            options: None,
+            options,
         }
     }
 
