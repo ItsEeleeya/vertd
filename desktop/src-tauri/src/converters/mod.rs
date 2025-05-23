@@ -6,23 +6,14 @@ mod progress;
 mod video;
 
 use error::ConverterError;
-use options::{
-    AudioConversionOptions, ConversionOptions, DocumentConversionOptions, ImageConversionOptions,
-    VideoConversionOptions,
-};
-pub use progress::{
-    AudioProgressDetails, DocumentProgressDetails, ImageProgressDetails, ProgressDetails,
-    ProgressUpdate, VideoProgressDetails,
-};
+use options::ConversionOptions;
+use progress::ProgressStatus;
+pub use progress::ProgressUpdate;
 
-use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use specta::Type;
-use std::any::Any;
-use std::collections::HashMap;
 use std::fmt::Debug;
 use std::path::{Path, PathBuf};
-use std::str::FromStr;
 use std::sync::Arc;
 use strum::{Display, EnumString};
 use tokio::sync::mpsc;
@@ -65,7 +56,8 @@ pub enum Converters {
     Video { converter: VideoConverter },
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize, Type)]
+#[serde(rename_all = "camelCase")]
 pub struct ConversionTask {
     pub id: Ulid,
     pub kind: MediaKind,
@@ -74,6 +66,14 @@ pub struct ConversionTask {
     pub source_format_override: Option<FileFormat>,
     pub target_format: FileFormat,
     pub options: Option<ConversionOptions>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Type)]
+#[serde(rename_all = "camelCase")]
+pub struct TaskFilters {
+    pub kind: Option<MediaKind>,
+    pub status: Option<ProgressStatus>,
+    pub search: Option<String>,
 }
 
 impl ConversionTask {
@@ -124,7 +124,7 @@ impl ConversionTask {
             (MediaKind::Image, Some(ConversionOptions::Image(_))) => Ok(()),
             (MediaKind::Document, Some(ConversionOptions::Document(_))) => Ok(()),
             (_, None) => Ok(()), // No options is valid
-            (kind, actual_opts) => Err(ConverterError::MismatchedMediaKind {
+            (kind, _) => Err(ConverterError::MismatchedMediaKind {
                 expected: kind,
                 context: format!("task validation (ID: {})", self.id),
             }),

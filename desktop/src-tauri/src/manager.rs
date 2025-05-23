@@ -1,24 +1,57 @@
 use crate::converters::{ConversionTask, MediaKind, ProgressUpdate};
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap, HashSet, VecDeque};
 use std::sync::Arc;
 use tauri::AppHandle;
 use tokio::sync::mpsc;
 use tokio::task::JoinHandle;
 use ulid::Ulid;
 
-#[derive(Debug, Clone, Hash, Eq, PartialEq)]
-struct TaskKey {
-    id: Ulid,
-    kind: MediaKind,
+struct VisibleTasks {
+    ids: VecDeque<Ulid>,
+    capacity: usize,
+}
+
+impl VisibleTasks {
+    fn new(capacity: usize) -> Self {
+        Self {
+            ids: VecDeque::with_capacity(capacity),
+            capacity,
+        }
+    }
+
+    fn add(&mut self, id: Ulid) {
+        if self.ids.len() >= self.capacity {
+            self.ids.pop_front();
+        }
+        self.ids.push_back(id);
+    }
+
+    fn remove(&mut self, id: &Ulid) {
+        self.ids.retain(|&x| x != *id);
+    }
+
+    fn contains(&self, id: &Ulid) -> bool {
+        self.ids.contains(id)
+    }
+
+    fn is_full(&self) -> bool {
+        self.ids.len() >= self.capacity
+    }
 }
 
 pub struct ConversionManager {
     app_handle: AppHandle,
-    tasks: HashMap<TaskKey, Arc<ConversionTask>>,
-    active_tasks: HashMap<String, JoinHandle<()>>,
+    tasks: HashMap<Ulid, Arc<ConversionTask>>,
+    active_tasks: HashMap<Ulid, JoinHandle<()>>,
     progress_channels: HashMap<String, mpsc::Sender<ProgressUpdate>>,
-    kind_index: HashMap<MediaKind, HashSet<TaskKey>>,
+    kind_index: HashMap<MediaKind, HashSet<Ulid>>,
 }
+
+// #[derive(Debug, Clone, Hash, Eq, PartialEq)]
+// struct TaskKey {
+//     id: Ulid,
+//     kind: MediaKind,
+// }
 
 impl ConversionManager {
     pub fn new(app_handle: &AppHandle) -> Self {
@@ -33,20 +66,14 @@ impl ConversionManager {
 
     pub fn add_task(&mut self, task: ConversionTask) -> Ulid {
         let id = task.id;
-        let key = TaskKey {
-            id,
-            kind: task.kind,
-        };
-
-        self.tasks.insert(key.clone(), Arc::new(task));
-        self.kind_index.entry(key.kind).or_default().insert(key);
-
+        let kind = task.kind;
+        self.tasks.insert(id, Arc::new(task));
+        self.kind_index.entry(kind).or_default().insert(id);
         id
     }
 
-    pub fn get_task(&self, id: &Ulid, kind: MediaKind) -> Option<Arc<ConversionTask>> {
-        let key = TaskKey { id: *id, kind };
-        self.tasks.get(&key).cloned()
+    pub fn get_task(&self, id: &Ulid) -> Option<Arc<ConversionTask>> {
+        self.tasks.get(id).cloned()
     }
 
     pub fn get_tasks(
@@ -64,7 +91,7 @@ impl ConversionManager {
         };
 
         task_keys
-            .map(|keys: Vec<&TaskKey>| {
+            .map(|keys| {
                 keys.iter()
                     .skip(start)
                     .take(limit)
@@ -87,5 +114,50 @@ impl ConversionManager {
         self.active_tasks.clear();
         self.progress_channels.clear();
         self.kind_index.clear();
+    }
+
+    // Task state management
+    pub fn start_task(&mut self, id: &Ulid) -> Result<(), String> {
+        todo!()
+    }
+
+    pub fn cancel_task(&mut self, id: &Ulid) -> Result<(), String> {
+        todo!()
+    }
+
+    pub fn remove_task(&mut self, id: &Ulid) -> Result<(), String> {
+        todo!()
+    }
+
+    // Progress channel management
+    pub fn register_progress_channel(
+        &mut self,
+        id: &Ulid,
+        kind: MediaKind,
+        sender: mpsc::Sender<ProgressUpdate>,
+    ) -> Result<(), String> {
+        todo!()
+    }
+
+    pub fn remove_progress_channel(&mut self, id: &Ulid) -> Result<(), String> {
+        todo!()
+    }
+
+    // Task status queries
+    pub fn is_task_active(&self, id: &Ulid, kind: MediaKind) -> bool {
+        todo!()
+    }
+
+    pub fn get_task_progress(&self, id: &Ulid, kind: MediaKind) -> Option<ProgressUpdate> {
+        todo!()
+    }
+
+    // Batch operations
+    pub fn get_all_tasks(&self, kind: Option<MediaKind>) -> Vec<ConversionTask> {
+        todo!()
+    }
+
+    pub fn get_active_tasks(&self) -> Vec<ConversionTask> {
+        todo!()
     }
 }

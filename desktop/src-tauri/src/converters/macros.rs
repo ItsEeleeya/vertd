@@ -32,7 +32,7 @@ macro_rules! define_file_formats {
         // use serde::{Deserialize, Serialize};
         // use $crate::converters::; // Assuming MediaType is in converters module
 
-        #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, strum_macros::EnumString, strum_macros::Display, Serialize, Deserialize)]
+        #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, strum_macros::EnumString, strum_macros::Display, Serialize, Deserialize, specta::Type)]
         #[strum(serialize_all = "lowercase")]
         pub enum FileFormat {
             $( // Repeat for each media type block

@@ -4,6 +4,7 @@ use error::AppError;
 use manager::ConversionManager;
 use tauri::{Manager, WebviewWindow};
 use tauri_plugin_window_state::StateFlags;
+use tokio::sync::RwLock;
 
 mod commands;
 mod converters;
@@ -17,7 +18,7 @@ pub type AppResult<T> = std::result::Result<T, AppError>;
 pub fn run() {
     let specta_builder = tauri_specta::Builder::<tauri::Wry>::new()
         .events(tauri_specta::collect_events!())
-        .commands(tauri_specta::collect_commands![commands::invalidate_shadow]);
+        .commands(tauri_specta::collect_commands![commands::invalidate_shadow,]);
 
     #[cfg(debug_assertions)]
     specta_builder
@@ -58,7 +59,7 @@ pub fn run() {
         .setup(move |app| {
             specta_builder.mount_events(app);
 
-            app.manage(ConversionManager::new(app.handle()));
+            app.manage(RwLock::new(ConversionManager::new(app.handle())));
 
             #[cfg(target_os = "macos")]
             unsafe {
