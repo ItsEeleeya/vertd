@@ -1,11 +1,17 @@
 use crate::converters::{FileFormat, MediaKind};
 use std::io;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 #[derive(Debug, thiserror::Error)]
 pub enum ConverterError {
     #[error("Input file not found: {0}")]
     InputFileNotFound(PathBuf),
+
+    #[error("Invalid file extension: {0}")]
+    InvalidFileExtension(PathBuf),
+
+    #[error("Unsupported file format: {0}")]
+    UnsupportedFileFormat(String),
 
     #[error("Output error for path: {path}")]
     OutputError {

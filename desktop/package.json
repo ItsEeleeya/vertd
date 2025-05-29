@@ -19,11 +19,15 @@
 		"@fontsource/azeret-mono": "^5.2.6",
 		"@fontsource/lexend": "^5.2.6",
 		"@fontsource/radio-canada-big": "^5.2.5",
+		"@tanstack/svelte-query": "^5.76.2",
+		"@tanstack/svelte-query-devtools": "^5.76.2",
+		"@tanstack/virtual-core": "^3.13.9",
 		"@tauri-apps/api": "^2.5.0",
 		"@tauri-apps/plugin-opener": "^2.2.6",
 		"@tauri-apps/plugin-os": "~2.2.1",
 		"clsx": "^2.1.1",
-		"lucide-svelte": "^0.487.0"
+		"lucide-svelte": "^0.487.0",
+		"virtua": "^0.41.2"
 	},
 	"devDependencies": {
 		"@poppanator/sveltekit-svg": "^5.0.1",

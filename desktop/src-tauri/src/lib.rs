@@ -18,14 +18,20 @@ pub type AppResult<T> = std::result::Result<T, AppError>;
 pub fn run() {
     let specta_builder = tauri_specta::Builder::<tauri::Wry>::new()
         .events(tauri_specta::collect_events!())
-        .commands(tauri_specta::collect_commands![commands::invalidate_shadow,]);
+        .commands(tauri_specta::collect_commands![
+            commands::invalidate_shadow,
+            commands::add_tasks,
+            commands::get_tasks,
+            commands::add_mock_tasks,
+        ]);
 
     #[cfg(debug_assertions)]
     specta_builder
         .export(
             specta_typescript::Typescript::default()
+                .header("// @ts-nocheck")
                 .formatter(specta_typescript::formatter::prettier)
-                .header("// @ts-nocheck"),
+                .bigint(specta_typescript::BigIntExportBehavior::BigInt),
             "../src/bindings.ts",
         )
         .expect("Failed to export typescript bindings");

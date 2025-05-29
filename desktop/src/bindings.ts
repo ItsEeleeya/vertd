@@ -15,6 +15,43 @@ export const commands = {
 			else return { status: "error", error: e as any };
 		}
 	},
+	async addTasks(filePaths: string[]): Promise<Result<null, string>> {
+		try {
+			return {
+				status: "ok",
+				data: await TAURI_INVOKE("add_tasks", { filePaths }),
+			};
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: "error", error: e as any };
+		}
+	},
+	async getTasks(
+		kind: MediaKind | null,
+		start: number,
+		limit: number,
+	): Promise<Result<ConversionTask[], string>> {
+		try {
+			return {
+				status: "ok",
+				data: await TAURI_INVOKE("get_tasks", { kind, start, limit }),
+			};
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: "error", error: e as any };
+		}
+	},
+	async addMockTasks(count: number): Promise<Result<null, string>> {
+		try {
+			return {
+				status: "ok",
+				data: await TAURI_INVOKE("add_mock_tasks", { count }),
+			};
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: "error", error: e as any };
+		}
+	},
 };
 
 /** user-defined events **/
@@ -22,6 +59,137 @@ export const commands = {
 /** user-defined constants **/
 
 /** user-defined types **/
+
+export type AudioConversionOptions = {
+	/**
+	 * Target audio codec (e.g., "mp3", "opus", "flac", "copy").
+	 */
+	audioCodec: string | null;
+	/**
+	 * Target audio bitrate (e.g., "192k", "320k") or quality level.
+	 */
+	audioQuality: string | null;
+	/**
+	 * Sample rate (e.g., 44100, 48000).
+	 */
+	sampleRate: number | null;
+};
+export type ConversionOptions =
+	| { type: "video"; data: VideoConversionOptions }
+	| { type: "image"; data: ImageConversionOptions }
+	| { type: "audio"; data: AudioConversionOptions }
+	| { type: "document"; data: DocumentConversionOptions };
+export type ConversionTask = {
+	id: string;
+	kind: MediaKind;
+	inputPath: string;
+	outputPath: string | null;
+	sourceFormatOverride: FileFormat | null;
+	targetFormat: FileFormat;
+	options: ConversionOptions | null;
+};
+export type DocumentConversionOptions = {
+	/**
+	 * For PDF output: restrict permissions.
+	 */
+	pdfPermissions: PdfPermissions | null;
+	/**
+	 * For text output: line wrapping width.
+	 */
+	lineWrap: number | null;
+};
+export type FileFormat =
+	| "Mp4"
+	| "Webm"
+	| "Gif"
+	| "Avi"
+	| "Mkv"
+	| "Wmv"
+	| "Mov"
+	| "Mts"
+	| "Flv"
+	| "Ogv"
+	| "Mp3"
+	| "Wav"
+	| "Flac"
+	| "Ogg"
+	| "Aac"
+	| "M4a"
+	| "Opus"
+	| "Jpg"
+	| "Jpeg"
+	| "Png"
+	| "Webp"
+	| "Bmp"
+	| "Tiff"
+	| "Avif"
+	| "Ico"
+	| "Pdf"
+	| "Docx"
+	| "Odt"
+	| "Txt"
+	| "Html"
+	| "Md"
+	| "Epub";
+export type ImageConversionOptions = {
+	/**
+	 * Target quality (e.g., 1-100 for lossy formats like JPG/WebP).
+	 */
+	quality: number | null;
+	/**
+	 * Optional resizing parameters.
+	 */
+	resize: ResizeOptions | null;
+	/**
+	 * Format-specific: PNG compression level (0-9).
+	 */
+	pngCompression: number | null;
+	/**
+	 * Format-specific: WebP lossless encoding.
+	 */
+	webpLossless: boolean | null;
+};
+export type MediaKind = "Video" | "Audio" | "Image" | "Document";
+export type PdfPermissions = {
+	allowPrinting: boolean;
+	allowCopying: boolean;
+	allowEditing: boolean;
+};
+export type ResizeMode = "stretch" | "fit" | "fill";
+export type ResizeOptions = {
+	width: number | null;
+	height: number | null;
+	/**
+	 * How to handle aspect ratio ("stretch", "fit", "fill"). Default should be "fit".
+	 */
+	mode: ResizeMode | null;
+	/**
+	 * Filter type for resizing (e.g., "lanczos3", "nearest").
+	 */
+	filter: string | null;
+};
+export type VideoConversionOptions = {
+	/**
+	 * Encoding speed preset (e.g., "medium", "fast", "slow"). Specific values depend on codec.
+	 */
+	speedPreset: string | null;
+	/**
+	 * Constant Rate Factor (lower means better quality, larger file). Specific range depends on codec.
+	 */
+	crf: number | null;
+	/**
+	 * Target video codec (e.g., "libx264", "libx265", "av1", "copy"). None leaves it to the converter.
+	 */
+	videoCodec: string | null;
+	/**
+	 * Target audio codec (e.g., "aac", "opus", "copy"). None leaves it to the converter.
+	 */
+	audioCodec: string | null;
+	/**
+	 * Target audio bitrate (e.g., "192k").
+	 */
+	audioBitrate: string | null;
+};
 
 /** tauri-specta globals **/
 

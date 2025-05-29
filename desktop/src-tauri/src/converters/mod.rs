@@ -1,6 +1,6 @@
 #[macro_use]
 mod macros;
-mod error;
+pub(super) mod error;
 mod options;
 mod progress;
 mod video;
@@ -13,7 +13,7 @@ pub use progress::ProgressUpdate;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::fmt::Debug;
-use std::path::{Path, PathBuf};
+use std::path::{self, Path, PathBuf};
 use std::sync::Arc;
 use strum::{Display, EnumString};
 use tokio::sync::mpsc;
@@ -67,6 +67,32 @@ pub struct ConversionTask {
     pub target_format: FileFormat,
     pub options: Option<ConversionOptions>,
 }
+
+// impl TryFrom<&Path> for ConversionTask {
+//     type Error = ConverterError;
+
+//     fn try_from(path: &Path) -> Result<Self, Self::Error> {
+//         let extension = path
+//             .extension()
+//             .and_then(|ext| ext.to_str())
+//             .ok_or_else(|| ConverterError::InvalidFileExtension(path.into()))?;
+
+//         let source_format = FileFormat::try_from(extension)
+//             .map_err(|_| ConverterError::UnsupportedFileFormat(extension.into()))?;
+
+//         let kind = source_format.media_kind();
+
+//         Ok(Self {
+//             id: Ulid::new(),
+//             kind,
+//             input_path: path.to_path_buf(),
+//             output_path: None,
+//             source_format_override: None,
+//             target_format: source_format,
+//             options: None,
+//         })
+//     }
+// }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]

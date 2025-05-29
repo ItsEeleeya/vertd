@@ -1,5 +1,7 @@
-use crate::converters::{ConversionTask, MediaKind, ProgressUpdate};
+use crate::converters::error::ConverterError;
+use crate::converters::{ConversionTask, ConverterResult, FileFormat, MediaKind, ProgressUpdate};
 use std::collections::{HashMap, HashSet, VecDeque};
+use std::path::Path;
 use std::sync::Arc;
 use tauri::AppHandle;
 use tokio::sync::mpsc;
@@ -70,6 +72,22 @@ impl ConversionManager {
         self.tasks.insert(id, Arc::new(task));
         self.kind_index.entry(kind).or_default().insert(id);
         id
+    }
+
+    pub fn add_task_from_path(&mut self, path: &Path) -> ConverterResult<()> {
+        let extension = path
+            .extension()
+            .and_then(|ext| ext.to_str())
+            .ok_or_else(|| ConverterError::InvalidFileExtension(path.into()))?;
+
+        let source_format = FileFormat::try_from(extension)
+            .map_err(|_| ConverterError::UnsupportedFileFormat(extension.into()))?;
+
+        let kind = source_format.media_kind();
+
+        let task = ConversionTask::new(kind, path.to_path_buf(), None, source_format, None, None);
+        self.add_task(task);
+        Ok(())
     }
 
     pub fn get_task(&self, id: &Ulid) -> Option<Arc<ConversionTask>> {

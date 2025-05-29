@@ -1,0 +1,224 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# ConversionTask Sync Strategy
+
+## Overview
+
+This document outlines the strategy for keeping the backend and frontend in sync for ConversionTasks, with a focus on performance, real-time updates, and efficient resource usage.
+
+## Key Requirements
+
+- Support thousands of ConversionTasks
+- Real-time progress updates for active tasks
+- Bulk updates for task options per MediaKind
+- Parallel task execution limit (configurable, max 50)
+- Rate limiting for progress updates (max 15 updates/second per task)
+- Efficient frontend state management
+- Pagination to limit frontend data
+
+## Architecture
+
+### Backend Components
+
+1. **Conversion Manager**
+
+   - Manages task lifecycle and execution
+   - Enforces parallel execution limits
+   - Handles task queuing and prioritization
+
+2. **Progress Tracker**
+
+   - Monitors active task progress
+   - Implements rate limiting for updates
+   - Maintains active task registry
+
+### Frontend Components
+
+1. **TanStack Query Integration**
+
+   - Manages task data fetching and caching
+   - Implements pagination and infinite scroll
+   - Handles optimistic updates
+
+2. **Virtual List**
+
+   - Efficiently renders large task lists
+   - Manages viewport-based rendering
+   - Optimizes memory usage
+
+## Sync Strategies
+
+### 1. Query-Based Sync
+
+**Approach:**
+
+- Frontend maintains a paginated list of tasks using TanStack Query
+- Backend tracks which tasks are currently in the frontend's query
+- Progress updates are only sent for tasks in the current query
+
+**Pros:**
+
+- Efficient resource usage
+- Reduced network traffic
+- Better scalability
+- Clear separation of concerns
+
+**Cons:**
+
+- Slightly more complex implementation
+- Requires careful query tracking
+- May need additional state management
+
+### 2. Full Sync with Filtering
+
+**Approach:**
+
+- Backend sends all task updates
+- Frontend filters updates based on current viewport
+- Simpler but less efficient
+
+**Pros:**
+
+- Simpler implementation
+- No need for viewport tracking
+- Easier to debug
+
+**Cons:**
+
+- Higher network traffic
+- Less scalable
+- More frontend processing
+
+## Implementation Details
+
+### Backend Implementation
+
+```typescript
+// TaskManager.ts
+class TaskManager {
+  private activeTasks: Set<string> = new Set();
+  private maxParallelTasks: number = 50;
+  private updateRateLimit: number = 15; // updates per second
+
+  async addTask(task: ConversionTask) {
+    if (this.activeTasks.size >= this.maxParallelTasks) {
+      await this.queueTask(task);
+      return;
+    }
+    this.activeTasks.add(task.id);
+    await this.startTask(task);
+  }
+
+  private async startTask(task: ConversionTask) {
+    // Start task execution
+    // Set up progress tracking
+    // Initialize WebSocket updates
+  }
+}
+
+// ProgressTracker.ts
+class ProgressTracker {
+  private updateTimers: Map<string, NodeJS.Timer> = new Map();
+  private activeViewports: Map<string, Set<string>> = new Map();
+
+  trackTaskProgress(taskId: string, viewportId: string) {
+    this.activeViewports.get(viewportId)?.add(taskId);
+  }
+
+  async sendProgressUpdate(taskId: string, progress: number) {
+    // Check if task is in any active viewport
+    // Apply rate limiting
+    // Send update via WebSocket
+  }
+}
+```
+
+### Frontend Implementation
+
+```typescript
+// useConversionTasks.ts
+function useConversionTasks() {
+  const queryClient = useQueryClient();
+
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ["conversionTasks"],
+    queryFn: ({ pageParam = 0 }) => fetchTasks(pageParam),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
+
+  const virtualList = useVirtual({
+    size: data?.pages.reduce((acc, page) => acc + page.items.length, 0) ?? 0,
+    overscan: 5,
+  });
+
+  // WebSocket subscription
+  useEffect(() => {
+    const ws = new WebSocket(WS_URL);
+
+    ws.onmessage = (event) => {
+      const update = JSON.parse(event.data);
+      queryClient.setQueryData(["conversionTasks"], (old) => {
+        // Update task progress
+        return old;
+      });
+    };
+
+    return () => ws.close();
+  }, []);
+
+  return {
+    tasks: data?.pages.flatMap((page) => page.items) ?? [],
+    virtualList,
+    fetchNextPage,
+    hasNextPage,
+  };
+}
+```
+
+## Best Practices
+
+1. **Viewport Tracking**
+
+   - Track which tasks are currently visible
+   - Update backend when viewport changes
+   - Optimize update frequency
+
+2. **Rate Limiting**
+
+   - Implement token bucket algorithm
+   - Batch updates when possible
+   - Use debouncing for rapid changes
+
+3. **Error Handling**
+
+   - Implement retry mechanisms
+   - Handle connection drops gracefully
+   - Maintain consistency during errors
+
+4. **Performance Optimization**
+   - Use WebSocket compression
+   - Implement efficient data structures
+   - Optimize update payload size
+
+## Monitoring and Metrics
+
+1. **Key Metrics**
+
+   - Update frequency per task
+   - WebSocket message size
+   - Frontend render performance
+   - Backend resource usage
+
+2. **Monitoring**
+   - Track active connections
+   - Monitor update rates
+   - Measure end-to-end latency
+
+## Conclusion
+
+The recommended approach is the Query-Based Sync strategy, as it provides the best balance of efficiency and maintainability. By tracking the viewport and only sending updates for visible tasks, we can significantly reduce network traffic while maintaining real-time updates where needed.
+
+The implementation should be phased, starting with basic functionality and gradually adding optimizations based on real-world usage patterns and performance metrics.
