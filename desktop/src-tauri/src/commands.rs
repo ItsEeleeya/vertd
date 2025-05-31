@@ -56,6 +56,14 @@ pub async fn get_tasks(
 
 #[specta::specta]
 #[tauri::command]
+pub async fn print_all(manager: ConversionManagerState<'_>) -> CmdResult<()> {
+    let manager = manager.read().await;
+    manager.print_all();
+    Ok(())
+}
+
+#[specta::specta]
+#[tauri::command]
 pub async fn get_filtered_tasks(
     manager: ConversionManagerState<'_>,
     filters: TaskFilters,
@@ -136,6 +144,8 @@ pub async fn add_mock_tasks(manager: ConversionManagerState<'_>, count: f64) -> 
             i,
             format.default_extension()
         ));
+
+        println!("file: {i}");
 
         let task = ConversionTask::new(kind, input_path, None, format, None, None);
         writer.add_task(task);

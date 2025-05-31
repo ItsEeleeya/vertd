@@ -16,11 +16,13 @@
 		"tauri": "tauri"
 	},
 	"dependencies": {
+		"@faker-js/faker": "^9.8.0",
 		"@fontsource/azeret-mono": "^5.2.6",
 		"@fontsource/lexend": "^5.2.6",
 		"@fontsource/radio-canada-big": "^5.2.5",
 		"@tanstack/svelte-query": "^5.76.2",
 		"@tanstack/svelte-query-devtools": "^5.76.2",
+		"@tanstack/svelte-table": "^8.21.3",
 		"@tanstack/virtual-core": "^3.13.9",
 		"@tauri-apps/api": "^2.5.0",
 		"@tauri-apps/plugin-opener": "^2.2.6",

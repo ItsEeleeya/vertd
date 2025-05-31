@@ -23,6 +23,7 @@ pub fn run() {
             commands::add_tasks,
             commands::get_tasks,
             commands::add_mock_tasks,
+            commands::print_all,
         ]);
 
     #[cfg(debug_assertions)]
